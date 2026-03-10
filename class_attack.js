@@ -14,36 +14,25 @@ class Attack{
         return `${this.name} : #${this.id}, ${this.type}, ${this.power}, ${this.duration}ms`;
     }
 
-    fill_attack(){
-        // parcours de pokemon_moves 
-        for(let item of pokemon_moves){
-            let index = 1;
-            // création de l'objet
-            let attaque = new Attack(index,item.name,item.type,item.power,item.duration)
-            index++;
-            // insertion de l'objet dans la variable de classe
-            Attack.all_attacks[attaque.id] = attaque;
-        }
+    fill_attacks() {
 
-        // parcours de fast_moves
-        for(let item of fast_moves){
-            let index = 1;
-            // création de l'objet
-            let attaque = new Attack(index,item.name,item.type,item.power,item.duration)
-            index++;
-            // insertion de l'objet dans la variable de classe
-            Attack.all_attacks[attaque.id] = attaque;
-        }
+        let index = 1;
 
-        // parcours de charged_moves
-        for(let item of charged_moves){
-            let index = 1;
-            // création de l'objet
-            let attaque = new Attack(index,item.name,item.type,item.power,item.duration)
-            index++;
-            // insertion de l'objet dans la variable de classe
-            Attack.all_attacks[attaque.id] = attaque;
-        }
+        // regrouper toutes les sources de données
+        let all_moves = [...pokemon_moves, ...fast_moves, ...charged_moves];
 
+        for (let item of all_moves) {
+
+            let attaque = new Attack(
+                index,
+                item.name,
+                item.type,
+                item.power,
+                item.duration
+            );
+
+            Attack.all_attacks[index] = attaque;
+            index++;
+        }
     }
 }
