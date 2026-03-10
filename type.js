@@ -1,1 +1,3 @@
-class Type
+class Type {
+    
+}
