@@ -6,4 +6,7 @@ class Type{
 
     }
 
+    fill_types(){
+        
+    }
 }
