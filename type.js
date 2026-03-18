@@ -1,3 +1,5 @@
+import { type_effectiveness } from './data.js';
+
 class Type{
 
     static all_type;
@@ -25,6 +27,7 @@ class Type{
         this.Water = t18
     }
 
+<<<<<<< HEAD
     triTst(){
         let tabTypes = [];
         for (let i = 1; i < 19; i++) {
@@ -43,3 +46,9 @@ class Type{
 const bug = new Type("Bug", 1, 2, 3, 4, 5, 6,1 ,1 , 1, 1,1 ,1 ,1 ,1 ,1, 1, 1, 1);
 
 bug.triTst();
+=======
+    fill_types(){
+
+    }
+}
+>>>>>>> f755b56455d7670bc23002af9f6169637c5ba717
