@@ -14,6 +14,14 @@ class Pokemon {
 
 }
 
+getTypes() {
+    // Chercher dans pokemon_types le type qui correspond à cet ID et cette form
+    const typeInfo = pokemon_types.find(pt => 
+        pt.pokemon_id === this.pokemon_id && pt.form === this.form
+    );
+    return typeInfo ? typeInfo.type : [];
+}
+
 
 
 Bulbasaur : #1, [Normal], [STA: 155, ATK: 118, DEF: 111], Rapides = 
