@@ -1,7 +1,7 @@
 class Attack {
 
     static all_attacks = {};
-
+    // TODO mettre en anglais
     constructor(id, nom, type, puissance, duree) {
         this.id = id;
         this.nom = nom;

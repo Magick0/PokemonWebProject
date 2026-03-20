@@ -1,5 +1,23 @@
 function getPokemonsByType(typeName){
     // afficher la liste des pokemon pour un type donnée
+    for (const type of pokemon_types){
+        if(type.type.includes(typeName)){
+            const stats = pokemons.find(
+                p => p.pokemon_id === type.pokemon_id && p.form == type.form
+            );
+            if(stats){
+                const p = new Pokemon(
+                    stats.base_attack,
+                    stats.base_defense,
+                    stats.base_stamina,
+                    stats.form,
+                    stats.pokemon_id,
+                    stats.pokemon_name
+                )
+                console.log(p.toString());
+            }
+        }
+    }
 }
 
 function getPokemonsByAttack(attackName){
