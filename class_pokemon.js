@@ -7,10 +7,12 @@ class Pokemon {
         this.pokemon_id = pokemon_id;
         this.pokemon_name = pokemon_name;
         this.types = this.getTypes();
+        this.rapides = this.getAttacks()[0];
+        this.chargees = this.getAttacks()[1];
     }
 
     toString() {
-        return `${this.pokemon_name} : #${this.pokemon_id}, [${this.types.type.join(", ")}], [STA: ${this.base_stamina}, ATK: ${this.base_attack}, DEF: ${this.base_defense}], Rapides = [], Chargées = []`;
+        return `${this.pokemon_name} : #${this.pokemon_id}, [${this.types.join(", ")}], [STA: ${this.base_stamina}, ATK: ${this.base_attack}, DEF: ${this.base_defense}], Rapides = [], Chargées = []`;
     }
     
     getTypes() {
@@ -18,11 +20,14 @@ class Pokemon {
             pt.pokemon_id === this.pokemon_id && pt.form === this.form
         );
         // console.table(typeInfo.type);
-        return typeInfo;
+        return typeInfo.type;
+    }
+
+    getAttacks() {
+        const rapidesInfo = pokemon_moves.find(pm => 
+            pm.pokemon_id === this.pokemon_id && pm.form === this.form
+        );
+        // console.table(rapidesInfo.fast_moves, rapidesInfo.charged_moves);
+        return [rapidesInfo.fast_moves, rapidesInfo.charged_moves];
     }
 }
-
-
-const bulbasaur = new Pokemon(118, 111, 128, "Normal", 1, "Bulbasaur");
-bulbasaur.getTypes();
-console.table(bulbasaur.toString());
