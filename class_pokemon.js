@@ -26,12 +26,12 @@ class Pokemon {
         const typeDef = [];
 
         // console.table(typeInfo.type);
-        for(const type of typeInfo.type){
-            if(Type.all_type[type]){
-                typeDef.push(Type.all_type[type]);
+        for(const typeAct of typeInfo.type){
+            if(Type.all_type[typeAct]){
+                typeDef.push(Type.all_type[typeAct]);
             } else {
-                const typeInfo2 = type_effectiveness[type];
-                type = new Type(type, typeInfo2.Bug, typeInfo2.Dark, typeInfo2.Dragon, typeInfo2.Electric, typeInfo2.Fairy, typeInfo2.Fighting, typeInfo2.Fire, typeInfo2.Flying, typeInfo2.Ghost, typeInfo2.Grass, typeInfo2.Ground, typeInfo2.Ice, typeInfo2.Normal, typeInfo2.Poison, typeInfo2.Psychic, typeInfo2.Rock, typeInfo2.Steel, typeInfo2.Water);
+                const typeInfo2 = type_effectiveness[typeAct];
+                const type = new Type(typeAct, typeInfo2.Bug, typeInfo2.Dark, typeInfo2.Dragon, typeInfo2.Electric, typeInfo2.Fairy, typeInfo2.Fighting, typeInfo2.Fire, typeInfo2.Flying, typeInfo2.Ghost, typeInfo2.Grass, typeInfo2.Ground, typeInfo2.Ice, typeInfo2.Normal, typeInfo2.Poison, typeInfo2.Psychic, typeInfo2.Rock, typeInfo2.Steel, typeInfo2.Water);
                 typeDef.push(type);
             }
         }
