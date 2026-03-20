@@ -2,16 +2,16 @@ class Attack {
 
     static all_attacks = {};
 
-    constructor(id, nom, type, puissance, duree) {
+    constructor(id, name, type, power, duration) {
         this.id = id;
-        this.nom = nom;
+        this.name = name;
         this.type = type;
-        this.puissance = puissance;
-        this.duree = duree;
+        this.power = power;
+        this.duration = duration;
     }
 
     toString() {
-        return `${this.nom} : #${this.id}, ${this.type}, ${this.puissance}, ${this.duree}ms`;
+        return `${this.name} : #${this.id}, ${this.type}, ${this.power}, ${this.duration}ms`;
     }
 
     static fill_attacks() {
