@@ -12,7 +12,6 @@ class Pokemon {
         this.types = this.getTypes();
         this.rapides = this.getAttacks()[0];
         this.chargees = this.getAttacks()[1];
-        Pokemon.all_pokemons.push(this);
     }
 
     toString() {
@@ -45,21 +44,30 @@ class Pokemon {
             pm.pokemon_id === this.pokemon_id && pm.form === this.form
         );
 
-        const attackDef = [];
+        const fastAttackDef = [];
+        const chargedAttackDef = [];
 
         // pour chaque attack on essaye de les transformer en obj
         for(const att of attInfos.fast_moves){
             if(Attack.all_attacks[att]){ // deja fait donc ok
-                attackDef.push(Attack.all_attacks[att]);
+                fastAttackDef.push(Attack.all_attacks[att]);
             } else {                    // sinon on les cree
-                const attInfos2 = pokemon_moves[att];
-                const attack = new Attack(att, attInfos2.power, attInfos2.energy, attInfos2.type);
-                attackDef.push(attack);
+                const attInfos2 = fast_moves.find(fm => fm.name === att);
+                const attack = new Attack(att, attInfos2.move_id, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
+                fastAttackDef.push(attack);
             }
         }
-        return typeDef;
-        // console.table(attInfos.fast_moves, attInfos.charged_moves);
-        return [attInfos.fast_moves, attInfos.charged_moves];
+
+        for(const att of attInfos.charged_moves){
+            if(Attack.all_attacks[att]){ // deja fait donc ok
+                chargedAttackDef.push(Attack.all_attacks[att]);
+            } else {                    // sinon on les cree
+                const attInfos2 = charged_moves.find(fm => fm.name === att);
+                const attack = new Attack(att, attInfos2.move_id, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
+                chargedAttackDef.push(attack);
+            }
+        }
+        return [fastAttackDef, chargedAttackDef];
     }
 }
 
