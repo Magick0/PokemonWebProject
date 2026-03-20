@@ -28,7 +28,7 @@ class Type{
     }
 
 
-    fill_types(type, eff){
+    fill_types(){
         Type.all_type[this.nomType] = {
             "Bug": this.Bug,
             "Dark": this.Dark,
@@ -97,10 +97,13 @@ class Type{
 
 }
 
-const bug = new Type("Bug",1.0,1.6,1.0,1.0,0.625,0.625,0.625,0.625,0.625,1.6,1.0,1.0,1.0,0.625,1.6,1.0,0.625,1.0);
+// const bug = new Type("Bug",1.0,1.6,1.0,1.0,0.625,0.625,0.625,0.625,0.625,1.6,1.0,1.0,1.0,0.625,1.6,1.0,0.625,1.0);
 
-bug.triTst();
-console.table(bug.toString());
+// bug.triTst();
+// console.table(bug.toString());
 
-console.table()
+
+// console.table(Type.all_type);
+// bug.fill_types();
+// console.table(Type.all_type);
 
