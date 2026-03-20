@@ -1,4 +1,7 @@
 class Pokemon {
+
+    static all_pokemons = [];
+
     constructor(base_attack, base_defense, base_stamina, form, pokemon_id, pokemon_name) {
         this.base_attack = base_attack;
         this.base_defense = base_defense;
@@ -9,25 +12,56 @@ class Pokemon {
         this.types = this.getTypes();
         this.rapides = this.getAttacks()[0];
         this.chargees = this.getAttacks()[1];
+        Pokemon.all_pokemons.push(this);
     }
 
     toString() {
-        return `${this.pokemon_name} : #${this.pokemon_id}, [${this.types.join(", ")}], [STA: ${this.base_stamina}, ATK: ${this.base_attack}, DEF: ${this.base_defense}], Rapides = [], Chargées = []`;
+        return `${this.pokemon_name} : #${this.pokemon_id}, [${this.types}], [STA: ${this.base_stamina}, ATK: ${this.base_attack}, DEF: ${this.base_defense}], Rapides = [${this.rapides}], Chargées = [${this.chargees}]`;
     }
     
     getTypes() {
         const typeInfo = pokemon_types.find(pt => 
             pt.pokemon_id === this.pokemon_id && pt.form === this.form
         );
+
+        const typeDef = [];
+
         // console.table(typeInfo.type);
-        return typeInfo.type;
+        for(const type of typeInfo.type){
+            if(Type.all_type[type]){
+                typeDef.push(Type.all_type[type]);
+            } else {
+                const typeInfo2 = type_effectiveness[type];
+                type = new Type(type, typeInfo2.Bug, typeInfo2.Dark, typeInfo2.Dragon, typeInfo2.Electric, typeInfo2.Fairy, typeInfo2.Fighting, typeInfo2.Fire, typeInfo2.Flying, typeInfo2.Ghost, typeInfo2.Grass, typeInfo2.Ground, typeInfo2.Ice, typeInfo2.Normal, typeInfo2.Poison, typeInfo2.Psychic, typeInfo2.Rock, typeInfo2.Steel, typeInfo2.Water);
+                typeDef.push(type);
+            }
+        }
+        return typeDef;
     }
 
     getAttacks() {
-        const rapidesInfo = pokemon_moves.find(pm => 
+        // infos dans pokemon_moves
+        const attInfos = pokemon_moves.find(pm => 
             pm.pokemon_id === this.pokemon_id && pm.form === this.form
         );
-        // console.table(rapidesInfo.fast_moves, rapidesInfo.charged_moves);
-        return [rapidesInfo.fast_moves, rapidesInfo.charged_moves];
+
+        const attackDef = [];
+
+        // pour chaque attack on essaye de les transformer en obj
+        for(const att of attInfos.fast_moves){
+            if(Attack.all_attacks[att]){ // deja fait donc ok
+                attackDef.push(Attack.all_attacks[att]);
+            } else {                    // sinon on les cree
+                const attInfos2 = pokemon_moves[att];
+                const attack = new Attack(att, attInfos2.power, attInfos2.energy, attInfos2.type);
+                attackDef.push(attack);
+            }
+        }
+        return typeDef;
+        // console.table(attInfos.fast_moves, attInfos.charged_moves);
+        return [attInfos.fast_moves, attInfos.charged_moves];
     }
 }
+
+const bulbasaur = new Pokemon(118, 111, 128, "Normal", 1, "Bulbasaur");
+console.table(bulbasaur.toString());
