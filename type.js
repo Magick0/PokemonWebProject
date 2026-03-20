@@ -1,8 +1,8 @@
-import { type_effectiveness } from './data.js';
 
 class Type{
 
-    static all_type;
+    static all_type = {};
+    tabTemp = {};
 
 
     constructor(nom, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18){
@@ -27,28 +27,80 @@ class Type{
         this.Water = t18
     }
 
-<<<<<<< HEAD
+
+    fill_types(type, eff){
+        Type.all_type[this.nomType] = {
+            "Bug": this.Bug,
+            "Dark": this.Dark,
+            "Dragon": this.Dragon,
+            "Electric": this.Elecrtic,
+            "Fairy": this.Fairy,
+            "Fighting": this.Fighting,
+            "Fire": this.Fire,
+            "Flying": this.Flying,
+            "Ghost": this.Ghost,
+            "Grass": this.Grass,
+            "Ground": this.Ground,
+            "Ice": this.Ice,
+            "Normal": this.Normal,
+            "Poison": this.Poison,
+            "Psychic": this.Psychic,
+            "Rock": this.Rock,
+            "Steel": this.Steel,
+            "Water": this.Water
+        };
+    }
+
     triTst(){
-        let tabTypes = [];
-        for (let i = 1; i < 19; i++) {
-            tabTypes.push(this['t' + i])
+        const tabTypes = {
+            [this.nomType]: {
+                "Bug": this.Bug,
+                "Dark": this.Dark,
+                "Dragon": this.Dragon,
+                "Electric": this.Elecrtic,
+                "Fairy": this.Fairy,
+                "Fighting": this.Fighting,
+                "Fire": this.Fire,
+                "Flying": this.Flying,
+                "Ghost": this.Ghost,
+                "Grass": this.Grass,
+                "Ground": this.Ground,
+                "Ice": this.Ice,
+                "Normal": this.Normal,
+                "Poison": this.Poison,
+                "Psychic": this.Psychic,
+                "Rock": this.Rock,
+                "Steel": this.Steel,
+                "Water": this.Water
+            }
+        };
+
+        let tabTemp = {};
+
+        for (const [nomT, val] of Object.entries(tabTypes[this.nomType])) {
+            if (!this.tabTemp[val]) {
+                this.tabTemp[val] = [];
+            }
+            this.tabTemp[val].push(nomT);
         }
-        console.table(tabTypes);
     }
 
     toString(){
-        return '${this.nomType} : ${this.Bug} = []'}
+        let head = `${this.nomType} : `;
+        let cont = "";
 
-    
+        for (const [eff, types] of Object.entries(this.tabTemp)) {
+            cont += ` ${eff} : [${types}],`;
+        };
+        return head + cont;
+    }
 
 }
 
-const bug = new Type("Bug", 1, 2, 3, 4, 5, 6,1 ,1 , 1, 1,1 ,1 ,1 ,1 ,1, 1, 1, 1);
+const bug = new Type("Bug",1.0,1.6,1.0,1.0,0.625,0.625,0.625,0.625,0.625,1.6,1.0,1.0,1.0,0.625,1.6,1.0,0.625,1.0);
 
 bug.triTst();
-=======
-    fill_types(){
+console.table(bug.toString());
 
-    }
-}
->>>>>>> f755b56455d7670bc23002af9f6169637c5ba717
+console.table()
+
