@@ -7,18 +7,23 @@ function getPokemonsByAttack(attackName){
     for (const attack of pokemon_moves){
         moves = [...attack.charged_moves,...attack.elite_charged_moves,...attack.elite_fast_moves,...attack.fast_moves];
         if(moves.includes(attackName)){
-            // console.log(attack.pokemon_id);
-            for(pokemon of pokemons){
-                if(pokemon.id = attack.pokemon_id){
-                    poke = new Pokemon(pokemon.base_attack, pokemon.base_defense, pokemon.base_stamina, pokemon.form, pokemon.pokemon_id, pokemon.pokemon_name)
-                    poke.toString();
-                }
-                // console.log(pokemon);
+            const stats = pokemons.find(
+                p => p.pokemon_id === attack.pokemon_id && p.form == attack.form
+            );
+            if(stats){
+                const p = new Pokemon(
+                    stats.base_attack,
+                    stats.base_defense,
+                    stats.base_stamina,
+                    stats.form,
+                    stats.pokemon_id,
+                    stats.pokemon_name
+                )
+                console.log(p.toString());
             }
         }
     }
 }
-
 function getAttacksByType(typeName){
     // liste des attaques pour un type donnée
 }
