@@ -15,7 +15,7 @@ class Attack {
     }
 
     static fill_attacks() {
-        let all_moves = [...fast_moves, ...charged_moves,...pokemon_moves];
+        let all_moves = [...fast_moves, ...charged_moves];
         for (const item of all_moves) {
             Attack.all_attacks[item.move_id] = new Attack(
                 item.move_id,
