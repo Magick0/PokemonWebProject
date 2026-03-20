@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Script Attacks</h1>
+
+</body>
+<script src="html/data/charged_moves.js"></script>
+<script src="html/data/fast_moves.js"></script>
+<script src="html/data/pokemon_moves.js"></script>
+
+<!-- Classe Attack -->
+<script src="class_attack.js"></script>
+
+<script>
+    Attack.fill_attacks();
+    console.table(Attack.all_attacks[80].toString());
+</script>
+
+</html>

@@ -1,38 +1,29 @@
-class Attack{
+class Attack {
 
-    static all_attacks = [];
+    static all_attacks = {};
 
-    constructor(id,nom,type,puissance,duree){
-        this.id = id
-        this.nom = nom 
-        this.type = type
-        this.puissance = puissance
-        this.duree = duree
+    constructor(id, nom, type, puissance, duree) {
+        this.id = id;
+        this.nom = nom;
+        this.type = type;
+        this.puissance = puissance;
+        this.duree = duree;
     }
 
     toString() {
-        return `${this.name} : #${this.id}, ${this.type}, ${this.power}, ${this.duration}ms`;
+        return `${this.nom} : #${this.id}, ${this.type}, ${this.puissance}, ${this.duree}ms`;
     }
 
-    fill_attacks() {
-
-        let index = 1;
-
-        // regrouper toutes les sources de données
-        let all_moves = [...pokemon_moves, ...fast_moves, ...charged_moves];
-
-        for (let item of all_moves) {
-
-            let attaque = new Attack(
-                index,
+    static fill_attacks() {
+        let all_moves = [...fast_moves, ...charged_moves,...pokemon_moves];
+        for (const item of all_moves) {
+            Attack.all_attacks[item.move_id] = new Attack(
+                item.move_id,
                 item.name,
                 item.type,
                 item.power,
                 item.duration
             );
-
-            Attack.all_attacks[index] = attaque;
-            index++;
         }
     }
 }
