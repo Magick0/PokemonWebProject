@@ -29,26 +29,29 @@ class Type{
 
 
     fill_types(){
-        Type.all_type[this.nomType] = {
-            "Bug": this.Bug,
-            "Dark": this.Dark,
-            "Dragon": this.Dragon,
-            "Electric": this.Elecrtic,
-            "Fairy": this.Fairy,
-            "Fighting": this.Fighting,
-            "Fire": this.Fire,
-            "Flying": this.Flying,
-            "Ghost": this.Ghost,
-            "Grass": this.Grass,
-            "Ground": this.Ground,
-            "Ice": this.Ice,
-            "Normal": this.Normal,
-            "Poison": this.Poison,
-            "Psychic": this.Psychic,
-            "Rock": this.Rock,
-            "Steel": this.Steel,
-            "Water": this.Water
-        };
+        let all_types = [...pokemon_types];
+        for (const item of all_types) {
+            Type.all_type[item.nomType] = {
+                "Bug": item.Bug,
+                "Dark": item.Dark,
+                "Dragon": item.Dragon,
+                "Electric": item.Elecrtic,
+                "Fairy": item.Fairy,
+                "Fighting": item.Fighting,
+                "Fire": item.Fire,
+                "Flying": item.Flying,
+                "Ghost": item.Ghost,
+                "Grass": item.Grass,
+                "Ground": item.Ground,
+                "Ice": item.Ice,
+                "Normal": item.Normal,
+                "Poison": item.Poison,
+                "Psychic": item.Psychic,
+                "Rock": item.Rock,
+                "Steel": item.Steel,
+                "Water": item.Water
+            };
+        }
     }
 
     triTst(){

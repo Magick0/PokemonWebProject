@@ -15,7 +15,7 @@ class Pokemon {
     }
 
     toString() {
-        return `${this.pokemon_name} : #${this.pokemon_id}, [${this.types}], [STA: ${this.base_stamina}, ATK: ${this.base_attack}, DEF: ${this.base_defense}], Rapides = [${this.rapides}], Chargées = [${this.chargees}]`;
+        return `${this.pokemon_name} : #${this.pokemon_id}, [${this.types}], [STA: ${this.base_stamina}, ATK: ${this.base_attack}, DEF: ${this.base_defense}], Rapides = [${this.rapides.name}], Chargées = [${this.chargees.name}]`;
     }
     
     getTypes() {
@@ -53,7 +53,7 @@ class Pokemon {
                 fastAttackDef.push(Attack.all_attacks[att]);
             } else {                    // sinon on les cree
                 const attInfos2 = fast_moves.find(fm => fm.name === att);
-                const attack = new Attack(att, attInfos2.move_id, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
+                const attack = new Attack(attInfos2.move_id, att, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
                 fastAttackDef.push(attack);
             }
         }
@@ -63,10 +63,13 @@ class Pokemon {
                 chargedAttackDef.push(Attack.all_attacks[att]);
             } else {                    // sinon on les cree
                 const attInfos2 = charged_moves.find(fm => fm.name === att);
-                const attack = new Attack(att, attInfos2.move_id, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
+                const attack = new Attack(attInfos2.move_id, att, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
                 chargedAttackDef.push(attack);
             }
         }
+
+        console.table(fastAttackDef);
+        console.table(chargedAttackDef);
         return [fastAttackDef, chargedAttackDef];
     }
 }
