@@ -53,7 +53,7 @@ class Pokemon {
                 fastAttackDef.push(Attack.all_attacks[att]);
             } else {                    // sinon on les cree
                 const attInfos2 = fast_moves.find(fm => fm.name === att);
-                const attack = new Attack(attInfos2.move_id, att, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
+                const attack = new Attack(attInfos2.id, att, attInfos2.nom, attInfos2.type, attInfos2.power, attInfos2.duration);
                 fastAttackDef.push(attack);
             }
         }
@@ -63,7 +63,7 @@ class Pokemon {
                 chargedAttackDef.push(Attack.all_attacks[att]);
             } else {                    // sinon on les cree
                 const attInfos2 = charged_moves.find(fm => fm.name === att);
-                const attack = new Attack(attInfos2.move_id, att, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
+                const attack = new Attack(attInfos2.id, att, attInfos2.nom, attInfos2.type, attInfos2.power, attInfos2.duration);
                 chargedAttackDef.push(attack);
             }
         }
