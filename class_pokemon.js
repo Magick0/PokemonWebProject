@@ -6,10 +6,10 @@ class Pokemon {
         this.base_attack = base_attack;
         this.base_defense = base_defense;
         this.base_stamina = base_stamina;
-        this.form = form;
+        this.form = [form];
         this.pokemon_id = pokemon_id;
         this.pokemon_name = pokemon_name;
-        this.types = this.getTypes();
+        this.types = this.getTypes().map(type => type.nomType);
         this.rapides = this.getAttacks()[0].map(attack => attack.name);
         this.chargees = this.getAttacks()[1].map(attack => attack.name);
     }
@@ -19,13 +19,11 @@ class Pokemon {
     }
     
     getTypes() {
-        const typeInfo = pokemon_types.find(pt => 
-            pt.pokemon_id === this.pokemon_id && pt.form === this.form
-        );
+        const typeInfo = pokemon_types.find(pt => pt.pokemon_id === this.pokemon_id && pt.form === this.form[0]);
 
         const typeDef = [];
 
-        // console.table(typeInfo.type);
+        // console.table(typeInfo);
         for(const typeAct of typeInfo.type){
             if(Type.all_type[typeAct]){
                 typeDef.push(Type.all_type[typeAct]);
@@ -40,9 +38,7 @@ class Pokemon {
 
     getAttacks() {
         // infos dans pokemon_moves
-        const attInfos = pokemon_moves.find(pm => 
-            pm.pokemon_id === this.pokemon_id && pm.form === this.form
-        );
+        const attInfos = pokemon_moves.find(pm => pm.pokemon_id === this.pokemon_id && pm.form === this.form[0]);
 
         const fastAttackDef = [];
         const chargedAttackDef = [];
@@ -53,8 +49,10 @@ class Pokemon {
                 fastAttackDef.push(Attack.all_attacks[att]);
             } else {                    // sinon on les cree
                 const attInfos2 = fast_moves.find(fm => fm.name === att);
-                const attack = new Attack(attInfos2.id, att, attInfos2.nom, attInfos2.type, attInfos2.power, attInfos2.duration);
-                fastAttackDef.push(attack);
+                if(attInfos2 !== undefined){
+                    const attack = new Attack(attInfos2.move_id, att, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
+                    fastAttackDef.push(attack);
+                }
             }
         }
 
@@ -63,7 +61,7 @@ class Pokemon {
                 chargedAttackDef.push(Attack.all_attacks[att]);
             } else {                    // sinon on les cree
                 const attInfos2 = charged_moves.find(fm => fm.name === att);
-                const attack = new Attack(attInfos2.id, att, attInfos2.nom, attInfos2.type, attInfos2.power, attInfos2.duration);
+                const attack = new Attack(attInfos2.move_id, att, attInfos2.name, attInfos2.type, attInfos2.power, attInfos2.duration);
                 chargedAttackDef.push(attack);
             }
         }
@@ -72,13 +70,21 @@ class Pokemon {
     }
 
     static fillAllPokemons() {
-        let all_pokemons = [...pokemons, ...pokemon_types, ...pokemon_moves];
+        let all_pokemons = [...pokemons];
         for (const item of all_pokemons) {
-            Pokemon.all_pokemons.push(new Pokemon(item.base_attack, item.base_defense, item.base_stamina, item.form, item.pokemon_id, item.pokemon_name, item.type, item.fast_moves, item.charged_moves));
+            if(item.pokemon_id in Pokemon.all_pokemons.map(p => p.pokemon_id)){
+                Pokemon.all_pokemons[item.pokemon_id].types.push(item.type);
+                Pokemon.all_pokemons[item.pokemon_id].rapides.push(item.fast_moves);    
+                Pokemon.all_pokemons[item.pokemon_id].chargees.push(item.charged_moves);
+                Pokemon.all_pokemons[item.pokemon_id].form.push(item.form);
+            } else {
+                Pokemon.all_pokemons.push(new Pokemon(item.base_attack, item.base_defense, item.base_stamina, item.form, item.pokemon_id, item.pokemon_name, item.type, item.fast_moves, item.charged_moves));
+            }
         }
     }
 }
 
 // const bulbasaur = new Pokemon(118, 111, 128, "Normal", 1, "Bulbasaur");
-Pokemon.fillAllPokemons();
-console.table(Pokemon.all_pokemons);
+// console.table(bulbasaur.toString());
+// Pokemon.fillAllPokemons();
+// console.table(Pokemon.all_pokemons);
