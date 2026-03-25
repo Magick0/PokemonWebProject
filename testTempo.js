@@ -43,7 +43,8 @@ function getPokemonsByAttack(attackName){
     }
 }
 function getAttacksByType(typeName){
-    // liste des attaques pour un type donnée
+    Type.fill_types();
+    console.table(all_type);
 }
 
 function sortPokemonByTypeThenName(){
