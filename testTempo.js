@@ -1,3 +1,4 @@
+// Q1 / Done
 function getPokemonsByType(typeName){
     // afficher la liste des pokemon pour un type donnée
     for (const type of pokemon_types){
@@ -22,6 +23,7 @@ function getPokemonsByType(typeName){
     }
 }
 
+// Q2 / Done
 function getPokemonsByAttack(attackName){
     // liste des pokémon pour une attaque donnée
     for (const attack of pokemon_moves){
@@ -48,19 +50,42 @@ function getPokemonsByAttack(attackName){
     }
 }
 
+// Q3 / Done
 function getAttacksByType(typeName){
-    // On remplie all attack
-    Attack.fill_attacks();
     // pour toutes les attack
     for(const attack of Object.values(Attack.all_attacks)){
         // si le type de l'attaque correspond à notre recherche
         if(typeName === attack.type){
             // on l'affiche
-            console.table(attack);
+            console.log(attack.toString());
         }
     }
 }
 
+// Q4 / TODO
 function sortPokemonByTypeThenName(){
     // liste des pokemon trie par type puis par nom
+    // en attente de Pokemon.js
+}
+
+// Q5 / TODO
+function getWeakestEnemies(attackName){
+    // list des pokemon pour lesquelles l'attaque donné est la plus éfficace (nom de l'attaque = chaine de caractère)
+    // en attente de Pokemon.js
+    Pokemon.fillAllPokemons();
+    console.table(Pokemon.all_pokemons);
+}
+
+// Q6 // In working
+function getBestFastAttacksForEnemy(print, pokemonName){
+    /*
+    si print == true
+        list des attack (toString) &&&& dégat (Puissance x Efficacité x (base attaque A / base attaque B))
+        et ça contre un pokemon donnée en paramètre
+    hors if 
+
+    */
+    if(print){
+        
+    }
 }
