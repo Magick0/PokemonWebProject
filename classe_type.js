@@ -28,7 +28,7 @@ class Type{
     }
 
 
-    fill_types(){
+    static fill_types(){
         let all_types = [...pokemon_types];
         for (const item of all_types) {
             Type.all_type[item.nomType] = {
