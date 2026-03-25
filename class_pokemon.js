@@ -10,12 +10,12 @@ class Pokemon {
         this.pokemon_id = pokemon_id;
         this.pokemon_name = pokemon_name;
         this.types = this.getTypes();
-        this.rapides = this.getAttacks()[0];
-        this.chargees = this.getAttacks()[1];
+        this.rapides = this.getAttacks()[0].map(attack => attack.name);
+        this.chargees = this.getAttacks()[1].map(attack => attack.name);
     }
 
     toString() {
-        return `${this.pokemon_name} : #${this.pokemon_id}, [${this.types}], [STA: ${this.base_stamina}, ATK: ${this.base_attack}, DEF: ${this.base_defense}], Rapides = [${this.rapides.name}], Chargées = [${this.chargees.name}]`;
+        return `${this.pokemon_name} : #${this.pokemon_id}, [${this.types}], [STA: ${this.base_stamina}, ATK: ${this.base_attack}, DEF: ${this.base_defense}], Rapides = [${this.rapides}], Chargées = [${this.chargees}]`;
     }
     
     getTypes() {
