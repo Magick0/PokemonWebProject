@@ -68,7 +68,7 @@ function sortPokemonByTypeThenName(){
     // en attente de Pokemon.js
 }
 
-// Q5 / TODO
+// Q5 / In Working
 function getWeakestEnemies(attackName){
     // list des pokemon pour lesquelles l'attaque donné est la plus éfficace (nom de l'attaque = chaine de caractère)
     // en attente de Pokemon.js
@@ -79,13 +79,21 @@ function getWeakestEnemies(attackName){
 // Q6 // In working
 function getBestFastAttacksForEnemy(print, pokemonName){
     /*
-    si print == true
-        list des attack (toString) &&&& dégat (Puissance x Efficacité x (base attaque A / base attaque B))
-        et ça contre un pokemon donnée en paramètre
-    hors if 
+        si print == true
+            list des attack (toString) &&&& dégat (Puissance x Efficacité x (base attaque A / base attaque B))
+            et ça contre un pokemon donnée en paramètre
 
+        dans tout les cas
+            renvoyé : 
+            * le meilleur objet attack
+            * Dégat
+            * Efficacité
+            * un objet indépendant 
+                {atk : objAttack,pts : number,eff : number}
+
+        Si égalité entre attaque choisir la 1ère alphabetique
+
+        En tenant compte uniquement de fast_move
     */
-    if(print){
-        
-    }
+
 }
