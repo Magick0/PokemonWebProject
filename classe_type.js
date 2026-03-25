@@ -107,6 +107,4 @@ class Type{
 
 
 // console.table(Type.all_type);
-// bug.fill_types();
-// console.table(Type.all_type);
 
