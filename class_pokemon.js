@@ -68,11 +68,17 @@ class Pokemon {
             }
         }
 
-        console.table(fastAttackDef);
-        console.table(chargedAttackDef);
         return [fastAttackDef, chargedAttackDef];
+    }
+
+    static fillAllPokemons() {
+        let all_pokemons = [...pokemons, ...pokemon_types, ...pokemon_moves];
+        for (const item of all_pokemons) {
+            Pokemon.all_pokemons.push(new Pokemon(item.base_attack, item.base_defense, item.base_stamina, item.form, item.pokemon_id, item.pokemon_name, item.type, item.fast_moves, item.charged_moves));
+        }
     }
 }
 
-const bulbasaur = new Pokemon(118, 111, 128, "Normal", 1, "Bulbasaur");
-console.table(bulbasaur.toString());
+// const bulbasaur = new Pokemon(118, 111, 128, "Normal", 1, "Bulbasaur");
+Pokemon.fillAllPokemons();
+console.table(Pokemon.all_pokemons);
