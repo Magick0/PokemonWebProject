@@ -2,7 +2,6 @@
 class Type{
 
     static all_type = {};
-    tabTemp = {};
 
 
     constructor(nom, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18){
@@ -10,7 +9,7 @@ class Type{
         this.Bug = t1
         this.Dark = t2
         this.Dragon = t3
-        this.Elecrtic = t4
+        this.Electric = t4
         this.Fairy = t5
         this.Fighting = t6
         this.Fire = t7
@@ -28,31 +27,33 @@ class Type{
     }
 
 
-    static fill_types(){
-        let all_types = [...pokemon_types];
-        for (const item of all_types) {
-            Type.all_type[item.nomType] = {
-                "Bug": item.Bug,
-                "Dark": item.Dark,
-                "Dragon": item.Dragon,
-                "Electric": item.Elecrtic,
-                "Fairy": item.Fairy,
-                "Fighting": item.Fighting,
-                "Fire": item.Fire,
-                "Flying": item.Flying,
-                "Ghost": item.Ghost,
-                "Grass": item.Grass,
-                "Ground": item.Ground,
-                "Ice": item.Ice,
-                "Normal": item.Normal,
-                "Poison": item.Poison,
-                "Psychic": item.Psychic,
-                "Rock": item.Rock,
-                "Steel": item.Steel,
-                "Water": item.Water
-            };
+    static fill_types() {
+        for (var types in type_effectiveness) {
+            var effectiveness = type_effectiveness[types];
+            Type.all_type[types] = new Type( 
+                effectiveness.Bug, 
+                effectiveness.Dark, 
+                effectiveness.Dragon, 
+                effectiveness.Electric, 
+                effectiveness.Fairy, 
+                effectiveness.Fighting, 
+                effectiveness.Fire, 
+                effectiveness.Flying, 
+                effectiveness.Ghost, 
+                effectiveness.Grass, 
+                effectiveness.Ground, 
+                effectiveness.Ice, 
+                effectiveness.Normal, 
+                effectiveness.Poison, 
+                effectiveness.Psychic, 
+                effectiveness.Rock, 
+                effectiveness.Steel, 
+                effectiveness.Water
+            );
         }
     }
+
+
 
     triTst(){
         const tabTypes = {
@@ -60,7 +61,7 @@ class Type{
                 "Bug": this.Bug,
                 "Dark": this.Dark,
                 "Dragon": this.Dragon,
-                "Electric": this.Elecrtic,
+                "Electric": this.Electric,
                 "Fairy": this.Fairy,
                 "Fighting": this.Fighting,
                 "Fire": this.Fire,
@@ -105,6 +106,6 @@ class Type{
 // bug.triTst();
 // console.table(bug.toString());
 
-
+// Type.fill_types();
 // console.table(Type.all_type);
 

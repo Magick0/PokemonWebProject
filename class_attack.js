@@ -17,7 +17,6 @@ class Attack {
         let all_moves = [...fast_moves, ...charged_moves];
         for (const item of all_moves) {
             Attack.all_attacks[item.move_id] = new Attack(
-                item.move_id,
                 item.name,
                 item.type,
                 item.power,
@@ -26,3 +25,6 @@ class Attack {
         }
     }
 }
+
+// Attack.fill_attacks();
+// console.table(Attack.all_attacks);
