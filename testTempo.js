@@ -97,3 +97,8 @@ function getBestFastAttacksForEnemy(print, pokemonName){
     */
 
 }
+
+// Q7 / TODO
+function fastFight(pokemonA, pokemonB){
+
+}
