@@ -43,5 +43,5 @@ class Pokemon {
 
 // const bulbasaur = new Pokemon(118, 111, 128, "Normal", 1, "Bulbasaur");
 // console.table(bulbasaur.toString());
-Pokemon.fill_Pokemons();
-console.table(Pokemon.all_pokemons);
+// Pokemon.fill_Pokemons();
+// console.table(Pokemon.all_pokemons);

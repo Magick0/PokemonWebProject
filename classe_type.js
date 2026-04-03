@@ -1,7 +1,7 @@
 
 class Type{
 
-    static all_type = {};
+    static all_types = {};
 
 
     constructor(nom, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18){
@@ -30,7 +30,7 @@ class Type{
     static fill_types() {
         for (var types in type_effectiveness) {
             var effectiveness = type_effectiveness[types];
-            Type.all_type[types] = new Type( 
+            Type.all_types[types] = new Type( 
                 effectiveness.Bug, 
                 effectiveness.Dark, 
                 effectiveness.Dragon, 
