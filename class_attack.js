@@ -17,6 +17,7 @@ class Attack {
         let all_moves = [...fast_moves, ...charged_moves];
         for (const item of all_moves) {
             Attack.all_attacks[item.move_id] = new Attack(
+                item.move_id, // TODO vérifier si il faut le mettre ici, sinon problème dans le constructeur...
                 item.name,
                 item.type,
                 item.power,
