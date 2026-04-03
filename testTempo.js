@@ -13,7 +13,6 @@ function getPokemonsByType(typeName){
                     stats.base_attack,
                     stats.base_defense,
                     stats.base_stamina,
-                    stats.form,
                     stats.pokemon_id,
                     stats.pokemon_name
                 )
@@ -28,11 +27,16 @@ function getPokemonsByAttack(attackName){
     // liste des pokémon pour une attaque donnée
     for (const attack of pokemon_moves){
         // on liste les élement à parcourir
-        moves = [...attack.charged_moves,...attack.elite_charged_moves,...attack.elite_fast_moves,...attack.fast_moves];
-        // si dans nos élement on retrouve l'attack recherché
-        if(moves.includes(attackName)){
+        const moves = [
+            ...(attack.charged_moves ?? []),
+            ...(attack.elite_charged_moves ?? []),
+            ...(attack.elite_fast_moves ?? []),
+            ...(attack.fast_moves ?? [])
+        ];
+        // si dans nos élement on retrouve l'attack recherché   
+        if(moves.includes(attackName)){ 
             const stats = pokemons.find(
-                p => p.pokemon_id === attack.pokemon_id && p.form == attack.form
+                p => p.pokemon_id === attack.pokemon_id
             );
             if(stats){
                 // on créer un pokemon temporaire qu'on affiche
@@ -40,7 +44,6 @@ function getPokemonsByAttack(attackName){
                     stats.base_attack,
                     stats.base_defense,
                     stats.base_stamina,
-                    stats.form,
                     stats.pokemon_id,
                     stats.pokemon_name
                 )
