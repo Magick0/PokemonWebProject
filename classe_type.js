@@ -31,6 +31,7 @@ class Type{
         for (var types in type_effectiveness) {
             var effectiveness = type_effectiveness[types];
             Type.all_types[types] = new Type( 
+                types,
                 effectiveness.Bug, 
                 effectiveness.Dark, 
                 effectiveness.Dragon, 
@@ -107,5 +108,5 @@ class Type{
 // console.table(bug.toString());
 
 // Type.fill_types();
-// console.table(Type.all_type);
+// console.table(Type.all_types);
 
