@@ -19,11 +19,13 @@ class Pokemon {
     
     getTypes() {
         const typeInfo = pokemon_types.find(pt => pt.pokemon_id === this.pokemon_id);
+        if (!typeInfo) return []; // add psk y'a des fois ou ça return rien donc erreur dans les test plus loins
         return typeInfo.type;
     }
 
     getAttacks() {
         const attInfos = pokemon_moves.find(pm => pm.pokemon_id === this.pokemon_id);
+        if (!attInfos) return [[],[]]; // add psk y'a des fois ou ça return rien donc erreur dans les test plus loins
         return [attInfos.fast_moves, attInfos.charged_moves];
     }
 

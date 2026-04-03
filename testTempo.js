@@ -1,11 +1,11 @@
 // Q1 / Done
 function getPokemonsByType(typeName){
     // afficher la liste des pokemon pour un type donnée
-    for (const type of pokemon_types){
-        // si on retrouve le type 
-        if(type.type.includes(typeName)){
+    for (const poke of pokemon_types){
+        // si on retrouve le type
+        if(poke.type.includes(typeName)){
             const stats = pokemons.find(
-                p => p.pokemon_id === type.pokemon_id && p.form == type.form
+                p => p.pokemon_id === poke.pokemon_id && p.form === poke.form
             );
             if(stats){
                 // on créer un pokemon temporaire qu'on affiche
