@@ -82,22 +82,13 @@ function sortPokemonByTypeThenName() {
     console.table(sortedPokemonsName);
 }
 
-Pokemon.fill_Pokemons();
-Type.fill_types();
-sortPokemonByTypeThenName();
-
-// Q5 / In Working
-function getWeakestEnemies(attackName){
-    // list des pokemon pour lesquelles l'attaque donné est la plus éfficace (nom de l'attaque = chaine de caractère)
-    // en attente de Pokemon.js
-    Pokemon.fillAllPokemons();
-    console.table(Pokemon.all_pokemons);
-}
+// Q5 // Done
+// Dans class_pokemon.js 
 
 // Q6 // Done
 // Dans class_pokemon.js 
 
-// Q7 / Done
+// Q7 // Done
 function fastFight(pokemonA, pokemonB){
     fight = {}
     tour = 0

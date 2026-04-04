@@ -81,6 +81,19 @@ class Pokemon {
     calcDmg(att, pokemonA, pokemonB){
         return (att.power * this.getEff(att, pokemonB) * Math.round(pokemonA.base_attack / pokemonB.base_defense));
     }
+
+    // Q5 // Done
+    getWeakestEnemies(attackName){
+        const pokemon = Pokemon.all_pokemons;
+        const attack = Object.values(Attack.all_attacks).find(att => att.name === attackName);
+        var pokeEff = [];
+        for(const poke of Object.values(pokemon)){
+            if(this.getEff(attack, poke) > 1){
+                pokeEff.push(poke);
+            }
+        }
+        console.table(pokeEff);
+    }
 }
 
 // const bulbasaur = new Pokemon(118, 111, 128, "Normal", 1, "Bulbasaur");
