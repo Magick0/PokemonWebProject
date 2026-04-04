@@ -2,6 +2,7 @@
 class Type{
 
     static all_types = {};
+    static tabTemp = {};
 
 
     constructor(nom, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18){
@@ -56,50 +57,26 @@ class Type{
 
 
 
-    triTst(){
-        const tabTypes = {
-            [this.nomType]: {
-                "Bug": this.Bug,
-                "Dark": this.Dark,
-                "Dragon": this.Dragon,
-                "Electric": this.Electric,
-                "Fairy": this.Fairy,
-                "Fighting": this.Fighting,
-                "Fire": this.Fire,
-                "Flying": this.Flying,
-                "Ghost": this.Ghost,
-                "Grass": this.Grass,
-                "Ground": this.Ground,
-                "Ice": this.Ice,
-                "Normal": this.Normal,
-                "Poison": this.Poison,
-                "Psychic": this.Psychic,
-                "Rock": this.Rock,
-                "Steel": this.Steel,
-                "Water": this.Water
-            }
-        };
+    toString() {
+        const groups = {};
+        for (const [key, value] of Object.entries(this)) {
+            if (key === "nomType") continue;
 
-        let tabTemp = {};
-
-        for (const [nomT, val] of Object.entries(tabTypes[this.nomType])) {
-            if (!this.tabTemp[val]) {
-                this.tabTemp[val] = [];
+            if (!groups[value]) {
+                groups[value] = [];
             }
-            this.tabTemp[val].push(nomT);
+            groups[value].push(key);
         }
+
+        const sortedEffs = Object.keys(groups).map(Number).sort((a, b) => b - a);
+        const segments = sortedEffs.map(eff => {
+            const types = groups[eff].sort(); 
+            const effDisplay = (eff === 1) ? "1.0" : eff.toString();
+            return `${effDisplay} = [${types.join(', ')}]`;
+        });
+
+        return `${this.nomType} : ${segments.join(', ')}`;
     }
-
-    toString(){
-        let head = `${this.nomType} : `;
-        let cont = "";
-
-        for (const [eff, types] of Object.entries(this.tabTemp)) {
-            cont += ` ${eff} : [${types}],`;
-        };
-        return head + cont;
-    }
-
 }
 
 // const bug = new Type("Bug",1.0,1.6,1.0,1.0,0.625,0.625,0.625,0.625,0.625,1.6,1.0,1.0,1.0,0.625,1.6,1.0,0.625,1.0);

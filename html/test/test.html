@@ -9,29 +9,30 @@
     <h1>Script Attacks</h1>
 
 </body>
-<script src="html/data/charged_moves.js"></script>
-<script src="html/data/fast_moves.js"></script>
-<script src="html/data/pokemon_moves.js"></script>
-<script src="html/data/pokemons.js"></script>
-<script src="html/data/pokemon_types.js"></script>
-<script src="html/data/type_effectiveness.js"></script>
+
+<script src="../data/charged_moves.js"></script>
+<script src="../data/fast_moves.js"></script>
+<script src="../data/pokemon_moves.js"></script>
+<script src="../data/pokemons.js"></script>
+<script src="../data/pokemon_types.js"></script>
+<script src="../data/type_effectiveness.js"></script>
 
 
 
 <!-- Classe Attack -->
-<script src="class_attack.js"></script>
-<script src="classe_type.js"></script>
-<script src="class_pokemon.js"></script>
-<script src="test.js"></script>
-<script src="verif.js"></script>
-
+<script src="../data/class_attack.js"></script>
+<script src="../data/classe_type.js"></script>
+<script src="../data/class_pokemon.js"></script>
 
 <script>
     Attack.fill_attacks();
     Type.fill_types();
     Pokemon.fill_Pokemons()
-    console.table(Attack.all_attacks);
-    getAttacksByType("Normal");
+    // console.table(Attack.all_attacks);
+    // getAttacksByType("Normal");
 </script>
+
+<script src="test.js"></script>
+<script src="verif.js"></script>
 
 </html>
