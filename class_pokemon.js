@@ -41,6 +41,46 @@ class Pokemon {
             );
         }
     }
+
+    getBestFastAttacksForEnemy(print, pokemonName){
+        const pokemonA = this;
+        const pokemonB = Object.values(Pokemon.all_pokemons).find(p => p.pokemon_name === pokemonName);
+        const attacks = Object.values(Attack.all_attacks).filter(att => pokemonA.rapides.some(move => move === att.name));
+
+        var maxDmg = 0;
+        var bestAttacks = [];
+        
+        for (const att of Object.values(attacks)) {
+            const dmg = this.calcDmg(att, pokemonA, pokemonB);
+            
+            if(print === true){
+                var cont = ` ${att.name} : ${dmg} damages, \n`;
+                console.log("Contre " + pokemonName + " : " + cont);
+            }
+            
+            if(dmg > maxDmg){
+                maxDmg = dmg;
+                bestAttacks = [att]; 
+            } else if(dmg === maxDmg){
+                bestAttacks.push(att);
+            }
+        
+        }
+        
+        var bestAttacksSorted = bestAttacks.sort((a, b) => a.name.localeCompare(b.name));
+        
+
+        return  {atk: bestAttacksSorted[0], pts: this.calcDmg(bestAttacksSorted[0], pokemonA, pokemonB), eff: this.getEff(bestAttacksSorted[0], pokemonB)};
+    }
+
+    getEff(att, pokemon){
+        const type = Type.all_types[pokemon.types[0]]; // TODO : gérer les pokémon avec 2 types, pour l'instant on prend que le premier type du pokémon, à voir si on peut faire mieux que ça (même si c'est pas forcément évident)
+        return type[att.type];
+    }
+
+    calcDmg(att, pokemonA, pokemonB){
+        return (att.power * this.getEff(att, pokemonB) * Math.round(pokemonA.base_attack / pokemonB.base_defense));
+    }
 }
 
 // const bulbasaur = new Pokemon(118, 111, 128, "Normal", 1, "Bulbasaur");

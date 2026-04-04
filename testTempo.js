@@ -65,11 +65,26 @@ function getAttacksByType(typeName){
     }
 }
 
-// Q4 / In Working
-function sortPokemonByTypeThenName(){
-    // liste des pokemon trie par type puis par nom
-    console.table(pokemon.sort((a, b) => a.name.localeCompare(b.name)))
+// Q4 / Done
+function sortPokemonByTypeThenName() {
+    const sortedPokemonsType = [...Pokemon.all_pokemons].sort((a, b) => {
+        const typeA = [...a.types].sort().join(',');
+        const typeB = [...b.types].sort().join(',');
+        const typeComparison = typeA.localeCompare(typeB);
+        return typeComparison;
+    });
+
+    const sortedPokemonsName = [...Pokemon.all_pokemons].sort((a, b) => {
+        return a.pokemon_name.localeCompare(b.pokemon_name);
+    });
+
+    console.table(sortedPokemonsType);
+    console.table(sortedPokemonsName);
 }
+
+Pokemon.fill_Pokemons();
+Type.fill_types();
+sortPokemonByTypeThenName();
 
 // Q5 / In Working
 function getWeakestEnemies(attackName){
@@ -80,44 +95,28 @@ function getWeakestEnemies(attackName){
 }
 
 // Q6 // Done
-function getBestFastAttacksForEnemy(print, pokemonName){
-    const pokemon = Object.values(Pokemon.all_pokemons).find(p => p.pokemon_name === pokemonName);
-    const attacks = Attack.all_attacks;
-    var maxDmg = 0;
-    var bestAttacks = [];
-    for (const att of Object.values(attacks)) {
-        
-        const dmg = calcDmg(att, pokemon);
+// Dans class_pokemon.js 
 
-        if(print === true){
-            var cont = ` ${att.name} : ${dmg} damages, \n`;
-            console.log("Contre " + pokemonName + " : " + cont);
-        }
-
-        if(dmg > maxDmg){
-            maxDmg = dmg;
-            bestAttacks = [att]; 
-        } else if(dmg === maxDmg){
-            bestAttacks.push(att);
-        }
-    }
-
-    bestAttacksSorted = bestAttacks.sort((a, b) => a.name.localeCompare(b.name));
-    console.table("ok");
-
-    // return  {atk: bestAttacksSorted[0], pts: calcDmg(bestAttacksSorted[0], pokemon), eff: getEff(bestAttacksSorted[0], pokemon)};
-}
-
-function getEff(att, pokemon){
-    const type = Type.all_types[pokemon.types[0]]; // TODO : gérer les pokémon avec 2 types, pour l'instant on prend que le premier type du pokémon, à voir si on peut faire mieux que ça (même si c'est pas forcément évident)
-    return type[att.type];
-}
-
-function calcDmg(att, pokemon){
-    return (att.power * getEff(att, pokemon) * Math.round(pokemon.base_attack / pokemon.base_defense));
-}
-
-// Q7 / TODO
+// Q7 / Done
 function fastFight(pokemonA, pokemonB){
-
+    fight = {}
+    tour = 0
+    while(pokemonA.base_stamina > 0 && pokemonB.base_stamina > 0){
+        tour++;
+        pokeAtt = (tour % 2 == 0) ? pokemonA : pokemonB;
+        pokeDef = (tour % 2 == 0) ? pokemonB : pokemonA;
+        fight[tour] = {
+            "tour": tour,
+            "Attaquant": pokeAtt.pokemon_name,
+            "ATK": pokeAtt.base_attack,
+            "Défenseur": pokeDef.pokemon_name,
+            "DEF": pokeDef.base_defense,
+            "Nom Attaque": pokeAtt.getBestFastAttacksForEnemy(false, pokeDef.pokemon_name).atk.name,
+            "Efficacité": pokeAtt.getBestFastAttacksForEnemy(false, pokeDef.pokemon_name).eff,
+            "Dégats": pokeAtt.getBestFastAttacksForEnemy(false, pokeDef.pokemon_name).pts,
+            "Reste": Math.floor(pokeDef.base_stamina - pokeAtt.getBestFastAttacksForEnemy(false, pokeDef.pokemon_name).pts)
+        }
+        pokeDef.base_stamina -= pokeAtt.getBestFastAttacksForEnemy(false, pokeDef.pokemon_name).pts;
+    }
+    console.table(fight)
 }
