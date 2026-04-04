@@ -65,10 +65,10 @@ function getAttacksByType(typeName){
     }
 }
 
-// Q4 / TODO
+// Q4 / In Working
 function sortPokemonByTypeThenName(){
     // liste des pokemon trie par type puis par nom
-    // en attente de Pokemon.js
+    console.table(pokemon.sort((a, b) => a.name.localeCompare(b.name)))
 }
 
 // Q5 / In Working
@@ -103,8 +103,9 @@ function getBestFastAttacksForEnemy(print, pokemonName){
     }
 
     bestAttacksSorted = bestAttacks.sort((a, b) => a.name.localeCompare(b.name));
+    console.table("ok");
 
-    return  {atk: bestAttacksSorted[0], pts: calcDmg(bestAttacksSorted[0], pokemon), eff: getEff(bestAttacksSorted[0], pokemon)};
+    // return  {atk: bestAttacksSorted[0], pts: calcDmg(bestAttacksSorted[0], pokemon), eff: getEff(bestAttacksSorted[0], pokemon)};
 }
 
 function getEff(att, pokemon){
