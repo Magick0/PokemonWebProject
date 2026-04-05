@@ -54,7 +54,7 @@ function displayPokemons(pokemonList) {
         
         const imgMinia = row.querySelector('img');
 
-        imgMinia.addEventListener('mouseover', (e) => {
+        imgMinia.addEventListener('mouseover', () => {
             const imgPoke = imgMinia.src.replace('thumbnails', 'images'); 
             imgPopup.src = imgPoke;
             popup.style.display = 'block';
@@ -63,6 +63,14 @@ function displayPokemons(pokemonList) {
         
         imgMinia.addEventListener('mouseout', () => {
             popup.style.display = 'none';
+        });
+
+        row.addEventListener('click', () => {
+            if(rowDetail.style.display == "none"){
+                rowDetail.style.display = "contents";
+            } else if(rowDetail.style.display == "contents"){
+                rowDetail.style.display = "none";
+            }
         });
     });
     

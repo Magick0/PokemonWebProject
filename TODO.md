@@ -7,7 +7,7 @@
 
 ## Détails
 
-- popup detail qui apparait et disparait
+- popup detail qui apparait et disparait, voir si c'est bien ce qui est demandée
 
 ## Filtrage
 
