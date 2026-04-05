@@ -42,6 +42,7 @@ class Pokemon {
         }
     }
 
+    // Q6 // Done
     getBestFastAttacksForEnemy(print, pokemonName){
         const pokemonA = this;
         const pokemonB = Object.values(Pokemon.all_pokemons).find(p => p.pokemon_name === pokemonName);
