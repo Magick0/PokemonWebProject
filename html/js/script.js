@@ -7,11 +7,14 @@ const popup = document.getElementById('popup');              // Cadre de la popu
 const imgPopup = popup.querySelector('img');                 // img de la popup
 const tableBody = document.getElementById('pokemonBody');    // tbody de la page
 const numPageVisuel = document.getElementById('numPage');    // affichage du num de page 0 / 30 ...
+const btnPre = document.getElementById('pre');               // btn précedant
+const btnSuiv = document.getElementById('suiv');             // btn Suivant
+
+const maxPoke = 26;                                          // max d'instances par pages
 
 // fonction pour injecter le tableau dans le HTML
 function displayPokemons(pokemonList) { 
     tableBody.textContent = "";                                             // reset le tableau avant chaque pagination
-    maxPoke = 26;                                                           // max d'instances par pages
     numPage = parseInt(numPageVisuel.textContent.split('/')[0].trim());     // numero de page actuelle 
     pokemonList = pokemonList.slice(numPage*maxPoke, (numPage+1)*maxPoke);  // liste temp de pokemon a afficher
     pokemonList.forEach(pokemon => {
@@ -64,9 +67,30 @@ function displayPokemons(pokemonList) {
     });
     
     numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(Object.values(Pokemon.all_pokemons).length / maxPoke)-1}`;
+
+    if(parseInt(numPageVisuel.textContent.split('/')[0].trim()) == 0 ){
+        btnPre.style.backgroundColor = "#7f7f7f"
+        btnPre.style.cursor = "default"
+        btnPre.style.transform = "none"
+    } else {
+        btnPre.style.backgroundColor = "#34495e"
+        btnPre.style.cursor = "pointer"
+        btnPre.style.transform = "translateY(-2px)"
+    }
+        
+    if (parseInt(numPageVisuel.textContent.split('/')[0].trim()) == Math.ceil(Object.values(Pokemon.all_pokemons).length / maxPoke)-1){
+        btnSuiv.style.backgroundColor = "#7f7f7f"
+        btnSuiv.style.cursor = "default"
+        btnSuiv.style.transform = "none"
+    } else {
+        btnSuiv.style.backgroundColor = "#34495e"
+        btnSuiv.style.cursor = "pointer"
+        btnSuiv.style.transform = "translateY(-2px)"
+    }
+
 }
 
-document.getElementById('Pre').addEventListener('click', () => {
+btnPre.addEventListener('click', () => {
     const numPageVisuel = document.getElementById('numPage');
     let numPage = parseInt(numPageVisuel.textContent.split('/')[0].trim());
     if(numPage > 0){
@@ -76,7 +100,7 @@ document.getElementById('Pre').addEventListener('click', () => {
     }
 });
 
-document.getElementById('Next').addEventListener('click', () => {
+btnSuiv.addEventListener('click', () => {
     const numPageVisuel = document.getElementById('numPage');
     let numPage = parseInt(numPageVisuel.textContent.split('/')[0].trim());
     if(numPage < Math.ceil(Object.values(Pokemon.all_pokemons).length / maxPoke) - 1){
@@ -85,6 +109,8 @@ document.getElementById('Next').addEventListener('click', () => {
         displayPokemons(Pokemon.all_pokemons);
     }
 });
+
+
 
 
 
