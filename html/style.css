@@ -63,17 +63,19 @@ td img {
     margin-right: 5px;
 }
 
+
 table + div {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 20px;
     margin: 30px 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-table + div a {
-    text-decoration: none;
-    background-color: #2c3e50; 
+table + div > div {
+    cursor: pointer;
+    background-color: #2c3e50;
     color: #ffffff;
     padding: 10px 25px;
     border-radius: 5px;
@@ -83,7 +85,7 @@ table + div a {
     text-align: center;
 }
 
-table + div a h2 {
+table + div > div h2 {
     margin: 0;
     font-size: 1rem;
     font-weight: 600;
@@ -91,12 +93,22 @@ table + div a h2 {
     letter-spacing: 1px;
 }
 
-table + div a:hover {
+table + div > div:hover {
     background-color: #34495e;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-table + div a:active {
+table + div > div:active {
     transform: translateY(0);
 }
+
+table + div h3 {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
