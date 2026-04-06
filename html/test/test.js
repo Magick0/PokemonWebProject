@@ -67,13 +67,16 @@ function getAttacksByType(typeName){
 
 // Q4 / Done
 function sortPokemonByTypeThenName() {
+    // on trie par type
     const sortedPokemonsType = [...Pokemon.all_pokemons].sort((a, b) => {
+        // on concatene pour prendre en compte si un pokemon a plusieurs types
         const typeA = [...a.types].sort().join(',');
         const typeB = [...b.types].sort().join(',');
         const typeComparison = typeA.localeCompare(typeB);
         return typeComparison;
     });
 
+    // on trie par Nom
     const sortedPokemonsName = [...Pokemon.all_pokemons].sort((a, b) => {
         return a.pokemon_name.localeCompare(b.pokemon_name);
     });
@@ -90,12 +93,16 @@ function sortPokemonByTypeThenName() {
 
 // Q7 // Done
 function fastFight(pokemonA, pokemonB){
-    fight = {}
-    tour = 0
-    while(pokemonA.base_stamina > 0 && pokemonB.base_stamina > 0){
-        tour++;
-        pokeAtt = (tour % 2 == 0) ? pokemonA : pokemonB;
-        pokeDef = (tour % 2 == 0) ? pokemonB : pokemonA;
+    fight = {}      // on créer un tableau pour pouvoir afficher plus tard le combat
+    tour = 0        // on initialise les tours
+    while(pokemonA.base_stamina > 0 && pokemonB.base_stamina > 0){ // tant qu'un pokemon a encore de la vie
+        tour++;       // on incr&mente le tour
+
+        // pour changer de pokemon attaquant et defenseur a chaque tour :
+        pokeAtt = (tour % 2 == 0) ? pokemonA : pokemonB;    // le pokemon Att est le PokemonA si le nbr de tour est paire
+        pokeDef = (tour % 2 == 0) ? pokemonB : pokemonA;    // l'inverse ici
+
+        // on ajoute dans fight le tour actuel
         fight[tour] = {
             "tour": tour,
             "Attaquant": pokeAtt.pokemon_name,
@@ -107,6 +114,7 @@ function fastFight(pokemonA, pokemonB){
             "Dégats": pokeAtt.getBestFastAttacksForEnemy(false, pokeDef.pokemon_name).pts,
             "Reste": Math.floor(pokeDef.base_stamina - pokeAtt.getBestFastAttacksForEnemy(false, pokeDef.pokemon_name).pts)
         }
+        // on met a jour la vie du pokemon defenseur pour continuer le combat
         pokeDef.base_stamina -= pokeAtt.getBestFastAttacksForEnemy(false, pokeDef.pokemon_name).pts;
     }
     console.table(fight)

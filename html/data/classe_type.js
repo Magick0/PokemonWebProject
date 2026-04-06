@@ -1,9 +1,7 @@
 
 class Type{
 
-    static all_types = {};
-    static tabTemp = {};
-
+    static all_types = {};  // dictionnaire contenant les objets Type
 
     constructor(nom, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18){
         this.nomType = nom
@@ -27,10 +25,12 @@ class Type{
         this.Water = t18
     }
 
-
+    // fonction qui remplis le dico all_types
     static fill_types() {
+        // pour chaques types
         for (var types in type_effectiveness) {
             var effectiveness = type_effectiveness[types];
+            // on indexe sur le nom du type
             Type.all_types[types] = new Type( 
                 types,
                 effectiveness.Bug, 
@@ -58,6 +58,7 @@ class Type{
 
 
     toString() {
+        // on créer un petit dico pour grouper par efficacité
         const groups = {};
         for (const [key, value] of Object.entries(this)) {
             if (key === "nomType") continue;
