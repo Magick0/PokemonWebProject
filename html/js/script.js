@@ -1,7 +1,7 @@
 
 Attack.fill_attacks();      // Initialisation des tableaux d'obets de chaque classes
 Type.fill_types();
-Pokemon.fill_Pokemons()
+Pokemon.fill_Pokemons();
 
 
 const popup = document.getElementById('popup');              // Cadre de la popup
@@ -10,15 +10,20 @@ const tableBody = document.getElementById('pokemonBody');    // tbody de la page
 const numPageVisuel = document.getElementById('numPage');    // affichage du num de page 0 / 30 ...
 const btnPre = document.getElementById('pre');               // btn précedant
 const btnSuiv = document.getElementById('suiv');             // btn Suivant
+const btnFiltre = document.getElementById('Filtre');         // btn Filtres
+const filtreCont = document.getElementById('filtres');       // filtres
+
+let listeUtil = Object.values(Pokemon.all_pokemons);
 
 const maxPoke = 26;                                          // max d'instances par pages
 
 
 function displayPokemons(pokemonList) {                     // fonction pour injecter le tableau dans le HTML
-    tableBody.textContent = "";                                             // reset le tableau avant chaque pagination
+    tableBody.textContent = "";                                             // reset le tableau avant chaque pagination*
+    pokemonList = Object.values(pokemonList);
     numPage = parseInt(numPageVisuel.textContent.split('/')[0].trim());     // numero de page actuelle 
-    pokemonList = pokemonList.slice(numPage*maxPoke, (numPage+1)*maxPoke);  // liste temp de pokemon a afficher
-    pokemonList.forEach(pokemon => {
+    const pokemonListSliced = pokemonList.slice(numPage*maxPoke, (numPage+1)*maxPoke);  // liste temp de pokemon a afficher
+    pokemonListSliced.forEach(pokemon => {
         const row = document.createElement('tr');                           // création d'une ligne avec les infos du poemon
         const rowDetail = document.createElement('tr');                     // création de la ligne en dessous avec les details
         
@@ -90,7 +95,8 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
     });
     
     // change le numero de page par celui qui convient
-    numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(Object.values(Pokemon.all_pokemons).length / maxPoke)-1}`;
+    console.table(pokemonList.length);
+    numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(pokemonList.length / maxPoke)-1}`;
 
 
     // Grisage des boutons is en fin de lsite ou en début de liste 
@@ -104,7 +110,7 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
         btnPre.style.transform = "translateY(-2px)"
     }
         
-    if (parseInt(numPageVisuel.textContent.split('/')[0].trim()) == Math.ceil(Object.values(Pokemon.all_pokemons).length / maxPoke)-1){ // si Fin de liste 
+    if (parseInt(numPageVisuel.textContent.split('/')[0].trim()) == Math.ceil(pokemonList.length / maxPoke)-1){ // si Fin de liste 
         btnSuiv.style.backgroundColor = "#7f7f7f"
         btnSuiv.style.cursor = "default"
         btnSuiv.style.transform = "none"
@@ -122,8 +128,8 @@ btnPre.addEventListener('click', () => {
     let numPage = parseInt(numPageVisuel.textContent.split('/')[0].trim());
     if(numPage > 0){    // évite la décrementation si page 0
         numPage--;
-        numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(Object.values(Pokemon.all_pokemons).length / maxPoke)-1}`;
-        displayPokemons(Pokemon.all_pokemons);
+        numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(listeUtil.length / maxPoke)-1}`;
+        displayPokemons(listeUtil);
     }
 });
 
@@ -131,12 +137,90 @@ btnPre.addEventListener('click', () => {
 btnSuiv.addEventListener('click', () => {
     const numPageVisuel = document.getElementById('numPage');
     let numPage = parseInt(numPageVisuel.textContent.split('/')[0].trim());
-    if(numPage < Math.ceil(Object.values(Pokemon.all_pokemons).length / maxPoke) - 1){ // évite l'incrémentation si page max
+    if(numPage < Math.ceil(Object.values(listeUtil).length / maxPoke) - 1){ // évite l'incrémentation si page max
         numPage++;
-        numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(Object.values(Pokemon.all_pokemons).length / maxPoke)-1}`;
-        displayPokemons(Pokemon.all_pokemons);
+        numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(listeUtil.length / maxPoke)-1}`;
+        displayPokemons(listeUtil);
     }
 });
 
+
+
+btnFiltre.addEventListener('click', () => {
+    if(filtreCont.style.display == "none"){
+        filtreCont.style.display = "flex";
+    } else if(filtreCont.style.display == "flex"){
+        filtreCont.style.display = "none";
+    }
+}); 
+
+function initFiltres(){
+    const selectType = document.createElement('select');
+    const selectAttack = document.createElement('select');
+    const inputPoke = document.createElement('input');
+
+    inputPoke.id = "inputPoke"
+    inputPoke.type = "text"
+    inputPoke.placeholder = "Chercher un Pokémon"
+    selectType.id = 'typeSelect';
+    selectAttack.id ='attackSelect';
+
+    const types = Type.all_types;
+    const attacks = Object.values(Attack.all_attacks).sort((a, b) => a.name.localeCompare(b.name));;
+
+    
+    selectType.innerHTML = `<option value="noType">---</option>`
+    for(var type in types){
+        selectType.innerHTML += `<option value="${type}">${type}</option>`
+    }
+
+    selectAttack.innerHTML = `<option value="noAttack">---</option>`
+    for(const att of attacks){
+        selectAttack.innerHTML += `<option value="${att.name}">${att.name}</option>`
+    }
+
+    
+    filtreCont.appendChild(selectType);
+    filtreCont.appendChild(selectAttack);
+    filtreCont.appendChild(inputPoke);
+    
+    document.getElementById('typeSelect').addEventListener('change', filtrage);
+    
+    document.getElementById('attackSelect').addEventListener('change', filtrage);
+
+    document.getElementById('inputPoke').addEventListener('input', filtrage);
+}
+
+function filtrage() {
+    console.log("filt");
+    const allPokes = Object.values(Pokemon.all_pokemons);
+    const typeVal = document.getElementById('typeSelect').value;
+    const attackVal = document.getElementById('attackSelect').value;
+    const nameVal = document.getElementById('inputPoke').value.toLowerCase(); 
+    // Voir si la gestion des accent fonctionne 
+
+
+    const filtre = allPokes.filter(p => {
+        
+        const nameF = p.pokemon_name.toLowerCase().includes(nameVal);
+        
+        const typeF = (typeVal === "noType") || p.types.includes(typeVal);
+        
+        console.table(p.rapides);
+
+        const attF = (attackVal === "noAttack") || p.rapides.some(a => a.includes(attackVal));
+
+        return nameF && typeF && attF;
+    });
+
+    console.table(filtre.length);
+    numPageVisuel.textContent = ` 0 / ${Math.max(0, Math.ceil(filtre.length / maxPoke) - 1)}`;
+    console.table(` 0 / ${Math.max(0, Math.ceil(filtre.length / maxPoke) - 1)}`);
+
+    listeUtil = filtre
+    displayPokemons(listeUtil);
+}
+
 // appel de la fonction
-displayPokemons(Pokemon.all_pokemons);
+initFiltres();
+displayPokemons(listeUtil);
