@@ -145,7 +145,7 @@ btnSuiv.addEventListener('click', () => {
 });
 
 
-
+// Quand click sur Filtre on affiches les diff filtres dispo
 btnFiltre.addEventListener('click', () => {
     if(filtreCont.style.display == "none"){
         filtreCont.style.display = "flex";
@@ -154,69 +154,84 @@ btnFiltre.addEventListener('click', () => {
     }
 }); 
 
+// fonction pour initialiser les filtres dans le HTML
 function initFiltres(){
-    const selectType = document.createElement('select');
-    const selectAttack = document.createElement('select');
-    const inputPoke = document.createElement('input');
+    const selectType = document.createElement('select');        // le select des types
+    const selectAttack = document.createElement('select');      // le select des attaques
+    const inputPoke = document.createElement('input');          // l'input avec les nom de pokemons'
 
-    inputPoke.id = "inputPoke"
+    // definit tous les param
+    inputPoke.id = "inputPoke"                                  
     inputPoke.type = "text"
     inputPoke.placeholder = "Chercher un Pokémon"
     selectType.id = 'typeSelect';
     selectAttack.id ='attackSelect';
 
+
     const types = Type.all_types;
     const attacks = Object.values(Attack.all_attacks).sort((a, b) => a.name.localeCompare(b.name));;
 
-    
+    // on initialise le premier comme le vide par défaut
     selectType.innerHTML = `<option value="noType">---</option>`
+    // on initialise ensuite en bouclant le reste
     for(var type in types){
         selectType.innerHTML += `<option value="${type}">${type}</option>`
     }
 
+    // on initialise le premier comme le vide par défaut
     selectAttack.innerHTML = `<option value="noAttack">---</option>`
+    // on initialise ensuite en bouclant le reste
     for(const att of attacks){
         selectAttack.innerHTML += `<option value="${att.name}">${att.name}</option>`
     }
 
-    
+    // on les fout dans le div conteneur 
     filtreCont.appendChild(selectType);
     filtreCont.appendChild(selectAttack);
     filtreCont.appendChild(inputPoke);
-    
-    document.getElementById('typeSelect').addEventListener('change', filtrage);
-    
-    document.getElementById('attackSelect').addEventListener('change', filtrage);
 
+
+    // si un des elements est changé ou un nom est donné alors on appel la fonction qui s'occupe de filter le tout
+    document.getElementById('typeSelect').addEventListener('change', filtrage);
+    document.getElementById('attackSelect').addEventListener('change', filtrage);
     document.getElementById('inputPoke').addEventListener('input', filtrage);
 }
 
 function filtrage() {
-    console.log("filt");
+    console.log("filtre ok");
     const allPokes = Object.values(Pokemon.all_pokemons);
+
+    // on recup les valeurs de ce qui est selectionné
     const typeVal = document.getElementById('typeSelect').value;
     const attackVal = document.getElementById('attackSelect').value;
     const nameVal = document.getElementById('inputPoke').value.toLowerCase(); 
     // Voir si la gestion des accent fonctionne 
 
 
+    // on va vouloir parmis les pokemon seuls ceux qui correspondant a la selection
     const filtre = allPokes.filter(p => {
         
+        // check si le nom comporte ce qu'on a écrit
         const nameF = p.pokemon_name.toLowerCase().includes(nameVal);
         
+        // check si le pokemon a ce type  sinon true
         const typeF = (typeVal === "noType") || p.types.includes(typeVal);
         
         console.table(p.rapides);
 
+        // check si le pokemon a cette attaque sinon true
         const attF = (attackVal === "noAttack") || p.rapides.some(a => a.includes(attackVal));
 
         return nameF && typeF && attF;
     });
 
     console.table(filtre.length);
+
+    // on met a jour le num de page
     numPageVisuel.textContent = ` 0 / ${Math.max(0, Math.ceil(filtre.length / maxPoke) - 1)}`;
     console.table(` 0 / ${Math.max(0, Math.ceil(filtre.length / maxPoke) - 1)}`);
 
+    // on met a jour la liste que l'on veut utiliser
     listeUtil = filtre
     displayPokemons(listeUtil);
 }
