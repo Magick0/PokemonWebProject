@@ -12,6 +12,7 @@ const btnPre = document.getElementById('pre');               // btn précedant
 const btnSuiv = document.getElementById('suiv');             // btn Suivant
 const btnFiltre = document.getElementById('Filtre');         // btn Filtres
 const filtreCont = document.getElementById('filtres');       // filtres
+const fondGris = document.getElementById('fondGris');
 
 let listeUtil = Object.values(Pokemon.all_pokemons);
 
@@ -56,14 +57,13 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
         
          // On définit dans notre deuxième tr les attaques
         rowDetail.innerHTML = `
-            <td colspan=8>
             <div>
-            <h2> Attaques Rapides : </h2>
-            <p> ${pokemon.rapides} </p>
-            <h2> Attaques Chargées : </h2>
-            <p> ${pokemon.chargees} </p>
+                <img src="webp/images/${String(pokemon.pokemon_id).padStart(3, '0')}.webp" alt="${pokemon.pokemon_name}">
+                <h2> Attaques Rapides : </h2>
+                <p> ${pokemon.rapides} </p>
+                <h2> Attaques Chargées : </h2>
+                <p> ${pokemon.chargees} </p>
             </div>
-            </td>
         `;                                                                 
         
 
@@ -88,10 +88,17 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
         row.addEventListener('click', () => {
             if(rowDetail.style.display == "none"){
                 rowDetail.style.display = "contents";
-            } else if(rowDetail.style.display == "contents"){
-                rowDetail.style.display = "none";
-            }
+                fondGris.style.display = "block";
+            } 
         });
+
+        window.onclick = function() {
+            if(rowDetail.style.display == "contents"){
+                rowDetail.style.display = "none";
+                console.log("ok");
+                fondGris.style.display = "none";
+            } 
+        };
     });
     
     // change le numero de page par celui qui convient

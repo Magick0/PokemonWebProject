@@ -52,18 +52,6 @@ td img {
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
-.type-badge {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-right: 5px;
-}
-
-
 table + div {
     display: flex;
     justify-content: center;
@@ -118,13 +106,19 @@ tr td {
 }
 
 tr div {
+    position: fixed; 
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: #ffffff;
-    padding: 15px 25px;
-    border-radius: 10px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03), 0 4px 10px rgba(0, 0, 0, 0.03);
+    flex-direction: column;
+    right: 35%;
+    top:20%;
+    gap: 15px;
+    z-index: 1000;
+    background: white;
+    padding: 30px;
+    border: 2px solid #2c3e50;
+    border-radius: 15px;
+    pointer-events: none; 
+    transition: opacity 0.2s ease;
 }
 
 tr h2 {
@@ -166,6 +160,19 @@ tr p {
     border-radius: 15px;
     pointer-events: none; 
     transition: opacity 0.2s ease;
+}
+
+#fondGris {
+    display: none; 
+    position: fixed; 
+    z-index: 999;
+    background: rgba(197, 197, 197, 0.507);
+    pointer-events: none; 
+    transition: opacity 0.2s ease;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
 }
 
 .ghost{
