@@ -66,23 +66,24 @@ function getAttacksByType(typeName){
 }
 
 // Q4 / Done
-function sortPokemonByTypeThenName() {
+function sortPokemonByTypeThenName(tabPokemon) {
     // on trie par type
-    const sortedPokemonsType = [...Pokemon.all_pokemons].sort((a, b) => {
+    const sortedPokemonsType = [...tabPokemon].sort((a, b) => {
         // on concatene pour prendre en compte si un pokemon a plusieurs types
         const typeA = [...a.types].sort().join(',');
         const typeB = [...b.types].sort().join(',');
-        const typeComparison = typeA.localeCompare(typeB);
-        return typeComparison;
-    });
 
-    // on trie par Nom
-    const sortedPokemonsName = [...Pokemon.all_pokemons].sort((a, b) => {
-        return a.pokemon_name.localeCompare(b.pokemon_name);
+        if(typeA != typeB){
+            const typeComparison = typeA.localeCompare(typeB);
+            return typeComparison;
+        } else {
+            const sortedPokemonsName = [...tabPokemon].sort((a, b) => {
+                return a.pokemon_name.localeCompare(b.pokemon_name);
+            });
+        }
     });
-
     console.table(sortedPokemonsType);
-    console.table(sortedPokemonsName);
+    return sortedPokemonsType;
 }
 
 // Q5 // Done

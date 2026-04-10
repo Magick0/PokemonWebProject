@@ -12,7 +12,7 @@ const btnPre = document.getElementById('pre');               // btn précedant
 const btnSuiv = document.getElementById('suiv');             // btn Suivant
 const btnFiltre = document.getElementById('Filtre');         // btn Filtres
 const filtreCont = document.getElementById('filtres');       // filtres
-const fondGris = document.getElementById('fondGris');
+const enteteTri = document.querySelectorAll('.tri');
 
 let listeUtil = Object.values(Pokemon.all_pokemons);
 
@@ -27,6 +27,9 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
     pokemonListSliced.forEach(pokemon => {
         const row = document.createElement('tr');                           // création d'une ligne avec les infos du poemon
         const rowDetail = document.createElement('tr');                     // création de la ligne en dessous avec les details
+
+        rowDetail.className = "modalPokemon";
+        rowDetail.id = `modal${pokemon.pokemon_id}`;
         
 
         // boucle imbriquée pour determiner la géneration, je t'aime wikipedia
@@ -57,7 +60,8 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
         
          // On définit dans notre deuxième tr les attaques
         rowDetail.innerHTML = `
-            <div>
+            <div class="modalPokemonContent">
+                <button class="close" onclick="fermeModal('modal${pokemon.pokemon_id}')">&times;</button>
                 <img src="webp/images/${String(pokemon.pokemon_id).padStart(3, '0')}.webp" alt="${pokemon.pokemon_name}">
                 <h2> Attaques Rapides : </h2>
                 <p> ${pokemon.rapides} </p>
@@ -87,18 +91,9 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
         // Click sur le tr principal pour afficher les details 
         row.addEventListener('click', () => {
             if(rowDetail.style.display == "none"){
-                rowDetail.style.display = "contents";
-                fondGris.style.display = "block";
+                rowDetail.style.display = "block";
             } 
         });
-
-        window.onclick = function() {
-            if(rowDetail.style.display == "contents"){
-                rowDetail.style.display = "none";
-                console.log("ok");
-                fondGris.style.display = "none";
-            } 
-        };
     });
     
     // change le numero de page par celui qui convient
@@ -128,6 +123,10 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
     }
 
 }
+
+function fermeModal(id){
+    document.getElementById(id).style.display = "none";
+};
 
 // Quand click sur Précedent 
 btnPre.addEventListener('click', () => {
@@ -242,6 +241,109 @@ function filtrage() {
     listeUtil = filtre
     displayPokemons(listeUtil);
 }
+
+function triPokemon(state, sujet){
+    let listTemp = listeUtil;
+    if(sujet == "id"){
+        if(state % 2 == 0){
+            listTemp.sort((a, b) => {
+                return a.pokemon_id - (b.pokemon_id);
+            });
+        } else {
+            listTemp.sort((a, b) => {
+                return b.pokemon_id - (a.pokemon_id);
+            });
+        }
+    }
+
+    if(sujet == "nom"){
+        if(state % 2 == 0){
+            listTemp.sort((a, b) => {
+                return a.pokemon_name.localeCompare(b.pokemon_name);
+            });
+        } else {
+            listTemp.sort((a, b) => {
+                return b.pokemon_name.localeCompare(a.pokemon_name);
+            });
+        }
+    }
+
+    if(sujet == "géneration"){
+        if(state % 2 == 0){
+            listTemp.sort((a, b) => {
+                return a.pokemon_id - (b.pokemon_id);
+            });
+        } else {
+            listTemp.sort((a, b) => {
+                return b.pokemon_id - (a.pokemon_id);
+            });
+        }
+    }
+
+    if(sujet == "types"){
+        if(state % 2 == 0){
+            listTemp = sortPokemonByTypeThenName(listTemp);
+        } else {
+            listTemp = sortPokemonByTypeThenName(listTemp).reverse();
+        }
+    }
+
+    if(sujet == "endurance"){
+        if(state % 2 == 0){
+            listTemp.sort((a, b) => {
+                return a.base_stamina - (b.base_stamina);
+            });
+            console.log("endu");
+        } else {
+            listTemp.sort((a, b) => {
+                return b.base_stamina - (a.base_stamina);
+            });
+        }
+    }
+
+    if(sujet == "points d'attaque"){
+        if(state % 2 == 0){
+            listTemp.sort((a, b) => {
+                return a.base_attack - (b.base_attack);
+            });
+        } else {
+            listTemp.sort((a, b) => {
+                return b.base_attack - (a.base_attack);
+            });
+        }
+    }
+
+    if(sujet == "points de défense"){
+        if(state % 2 == 0){
+            listTemp.sort((a, b) => {
+                return a.base_defense - (b.base_defense);
+            });
+        } else {
+            listTemp.sort((a, b) => {
+                return b.base_defense - (a.base_defense);
+            });
+        }
+    }
+
+    listeUtil = listTemp
+    displayPokemons(listeUtil);
+}
+
+enteteTri.forEach(tri =>{
+    var state = 0
+    tri.addEventListener('click', () => {
+        enteteTri.forEach(tris =>{
+            tris.style.fontWeight = 500;
+        });
+
+        tri.style.fontWeight = "bold";
+        
+        var sujet = tri.innerHTML.toLowerCase().trim();
+        console.log(sujet)
+        triPokemon(state, sujet);
+        state++;
+    })
+});
 
 // appel de la fonction
 initFiltres();
