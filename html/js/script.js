@@ -185,6 +185,7 @@ function filtrage() {
     const attackVal = $('#attackSelect').val();
     const nameVal   = $('#inputPoke').val().toLowerCase();
 
+    // on filtre
     const filtre = allPokes.filter(p => {
         const nameF = p.pokemon_name.toLowerCase().includes(nameVal);
         const typeF = (typeVal === "noType") || p.types.includes(typeVal);
@@ -203,9 +204,11 @@ function filtrage() {
     displayPokemons(listeUtil);
 }
 
+// fonction pour trier les pokemons en fonction du sujet a trier (state c'est juste pour passer de alph a alph inverse)
 function triPokemon(state, sujet) {
     let listTemp = listeUtil;
 
+    // on vas voir qu'est ce qu'on veut trier puis le trier sur le sujet demandé
     if (sujet == "id") {
         listTemp.sort((a, b) => state % 2 == 0 ? a.pokemon_id - b.pokemon_id : b.pokemon_id - a.pokemon_id);
     }
@@ -237,6 +240,7 @@ function triPokemon(state, sujet) {
     displayPokemons(listeUtil);
 }
 
+// pour chaque entete du tableau on va mettre un ecouteur qui appel la fonction de tri et lui donne en parametre le sujet
 $enteteTri.each(function () {
     var state = 0;
     $(this).on('click', function () {
