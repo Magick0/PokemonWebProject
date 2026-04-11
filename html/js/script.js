@@ -1,53 +1,50 @@
-
 Attack.fill_attacks();      // Initialisation des tableaux d'obets de chaque classes
 Type.fill_types();
 Pokemon.fill_Pokemons();
 
-
-const popup = document.getElementById('popup');              // Cadre de la popup
-const imgPopup = popup.querySelector('img');                 // img de la popup
-const tableBody = document.getElementById('pokemonBody');    // tbody de la page
-const numPageVisuel = document.getElementById('numPage');    // affichage du num de page 0 / 30 ...
-const btnPre = document.getElementById('pre');               // btn précedant
-const btnSuiv = document.getElementById('suiv');             // btn Suivant
-const btnFiltre = document.getElementById('Filtre');         // btn Filtres
-const filtreCont = document.getElementById('filtres');       // filtres
-const enteteTri = document.querySelectorAll('.tri');
+const $popup        = $('#popup');              // Cadre de la popup
+const $imgPopup     = $popup.find('img');       // img de la popup
+const $tableBody    = $('#pokemonBody');         // tbody de la page
+const $numPageVisuel = $('#numPage');            // affichage du num de page 0 / 30 ...
+const $btnPre       = $('#pre');                 // btn précédant
+const $btnSuiv      = $('#suiv');                // btn Suivant
+const $btnFiltre    = $('#Filtre');              // btn Filtres
+const $filtreCont   = $('#filtres');             // filtres
+const $enteteTri    = $('.tri');
 
 let listeUtil = Object.values(Pokemon.all_pokemons);
 
-const maxPoke = 26;                                          // max d'instances par pages
+const maxPoke = 26;                              // max d'instances par pages
 
 
-function displayPokemons(pokemonList) {                     // fonction pour injecter le tableau dans le HTML
-    tableBody.textContent = "";                                             // reset le tableau avant chaque pagination*
+function displayPokemons(pokemonList) {          // fonction pour injecter le tableau dans le HTML
+    $tableBody.empty();                                                         // reset le tableau avant chaque pagination
     pokemonList = Object.values(pokemonList);
-    numPage = parseInt(numPageVisuel.textContent.split('/')[0].trim());     // numero de page actuelle 
-    const pokemonListSliced = pokemonList.slice(numPage*maxPoke, (numPage+1)*maxPoke);  // liste temp de pokemon a afficher
+    let numPage = parseInt($numPageVisuel.text().split('/')[0].trim());         // numéro de page actuelle
+    const pokemonListSliced = pokemonList.slice(numPage * maxPoke, (numPage + 1) * maxPoke);  // liste temp de pokemon à afficher
+
     pokemonListSliced.forEach(pokemon => {
-        const row = document.createElement('tr');                           // création d'une ligne avec les infos du poemon
-        const rowDetail = document.createElement('tr');                     // création de la ligne en dessous avec les details
 
-        rowDetail.className = "modalPokemon";
-        rowDetail.id = `modal${pokemon.pokemon_id}`;
-        
+        // boucle imbriquée pour déterminer la génération
+        const generation = pokemon.pokemon_id < 152 ? 'Gen 1' : pokemon.pokemon_id < 252
+            ? 'Gen 2' : pokemon.pokemon_id < 387
+            ? 'Gen 3' : pokemon.pokemon_id < 494
+            ? 'Gen 4' : pokemon.pokemon_id < 650
+            ? 'Gen 5' : pokemon.pokemon_id < 722
+            ? 'Gen 6' : pokemon.pokemon_id < 810
+            ? 'Gen 7' : pokemon.pokemon_id < 891
+            ? 'Gen 8' : pokemon.pokemon_id < 1011
+            ? 'Gen 9' : 'Gen 10';
 
-        // boucle imbriquée pour determiner la géneration, je t'aime wikipedia
-        const generation = pokemon.pokemon_id < 152 ? 'Gen 1' : pokemon.pokemon_id < 252 
-            ? 'Gen 2' : pokemon.pokemon_id < 387 
-            ? 'Gen 3' : pokemon.pokemon_id < 494 
-            ? 'Gen 4' : pokemon.pokemon_id < 650 
-            ? 'Gen 5' : pokemon.pokemon_id < 722 
-            ? 'Gen 6' : pokemon.pokemon_id < 810 
-            ? 'Gen 7' : pokemon.pokemon_id < 891 
-            ? 'Gen 8' : pokemon.pokemon_id < 1011 
-            ? 'Gen 9' : 'Gen 10';                                           
+        // Création des lignes
+        const $row = $('<tr>');
+        const $rowDetail = $('<tr>')
+            .addClass('modalPokemon')
+            .attr('id', `modal${pokemon.pokemon_id}`)
+            .hide();                                                             // On cache par défaut les détails
 
-        rowDetail.style.display = "none";                                   // On cache par defauts les details    
-        
-        
         // On définit dans notre tr ce que l'on veut afficher
-        row.innerHTML = `               
+        $row.html(`
             <td>${pokemon.pokemon_id}</td>
             <td>${pokemon.pokemon_name}</td>
             <td>${generation}</td>
@@ -56,10 +53,10 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
             <td>${pokemon.base_attack}</td>
             <td>${pokemon.base_defense}</td>
             <td><img src="webp/thumbnails/${String(pokemon.pokemon_id).padStart(3, '0')}.webp" alt="${pokemon.pokemon_name}"></td>
-        `;                                                                                                                                              // pour l'image on va chercher les images en fonction des id de pokemons
-        
-         // On définit dans notre deuxième tr les attaques
-        rowDetail.innerHTML = `
+        `);
+
+        // On définit dans notre deuxième tr les attaques
+        $rowDetail.html(`
             <div class="modalPokemonContent">
                 <button class="close" onclick="fermeModal('modal${pokemon.pokemon_id}')">&times;</button>
                 <img src="webp/images/${String(pokemon.pokemon_id).padStart(3, '0')}.webp" alt="${pokemon.pokemon_name}">
@@ -68,281 +65,189 @@ function displayPokemons(pokemonList) {                     // fonction pour inj
                 <h2> Attaques Chargées : </h2>
                 <p> ${pokemon.chargees} </p>
             </div>
-        `;                                                                 
-        
+        `);
 
-        tableBody.appendChild(row);                                         // On injecte dans le HTML la ligne principale
-        tableBody.appendChild(rowDetail);                                   // On injecte dans le HTML la ligne secondaire
-        
-        const imgMinia = row.querySelector('img');                          // on récupere l'image miniature
+        $tableBody.append($row).append($rowDetail);                             // On injecte dans le HTML les deux lignes
+
+        const $imgMinia = $row.find('img');                                     // on récupère l'image miniature
 
         // Survol de la minia -> affichage de la Popup
-        imgMinia.addEventListener('mouseover', () => {  
-            const imgPoke = imgMinia.src.replace('thumbnails', 'images'); 
-            imgPopup.src = imgPoke;     // remplace par la bonne image
-            popup.style.display = 'block';
-        });
-        
-        // Quitte le survol de la minia -> cache la Popup
-        imgMinia.addEventListener('mouseout', () => {
-            popup.style.display = 'none';
+        $imgMinia.on('mouseover', function () {
+            const imgPoke = $(this).attr('src').replace('thumbnails', 'images');
+            $imgPopup.attr('src', imgPoke);     // remplace par la bonne image
+            $popup.show();
         });
 
-        // Click sur le tr principal pour afficher les details 
-        row.addEventListener('click', () => {
-            if(rowDetail.style.display == "none"){
-                rowDetail.style.display = "block";
-            } 
+        // Quitte le survol de la minia -> cache la Popup
+        $imgMinia.on('mouseout', function () {
+            $popup.hide();
+        });
+
+        // Click sur le tr principal pour afficher les détails
+        $row.on('click', function () {
+            if ($rowDetail.is(':hidden')) {
+                $rowDetail.css('display', 'block');
+            }
         });
     });
-    
-    // change le numero de page par celui qui convient
+
+    // change le numéro de page par celui qui convient
     console.table(pokemonList.length);
-    numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(pokemonList.length / maxPoke)-1}`;
+    $numPageVisuel.text(` ${numPage} / ${Math.ceil(pokemonList.length / maxPoke) - 1}`);
 
-
-    // Grisage des boutons is en fin de lsite ou en début de liste 
-    if(parseInt(numPageVisuel.textContent.split('/')[0].trim()) == 0 ){ // Si début de liste 
-        btnPre.style.backgroundColor = "#7f7f7f"
-        btnPre.style.cursor = "default"
-        btnPre.style.transform = "none"
-    } else {    // dégriser si c'est ok 
-        btnPre.style.backgroundColor = "#34495e"
-        btnPre.style.cursor = "pointer"
-        btnPre.style.transform = "translateY(-2px)"
-    }
-        
-    if (parseInt(numPageVisuel.textContent.split('/')[0].trim()) == Math.ceil(pokemonList.length / maxPoke)-1){ // si Fin de liste 
-        btnSuiv.style.backgroundColor = "#7f7f7f"
-        btnSuiv.style.cursor = "default"
-        btnSuiv.style.transform = "none"
-    } else {    // dégriser si c'est ok 
-        btnSuiv.style.backgroundColor = "#34495e"
-        btnSuiv.style.cursor = "pointer"
-        btnSuiv.style.transform = "translateY(-2px)"
+    // Grisage des boutons si en fin de liste ou en début de liste
+    if (parseInt($numPageVisuel.text().split('/')[0].trim()) === 0) {           // Si début de liste
+        $btnPre.css({ backgroundColor: '#7f7f7f', cursor: 'default', transform: 'none' });
+    } else {                                                                     // Dégriser si c'est ok
+        $btnPre.css({ backgroundColor: '#34495e', cursor: 'pointer', transform: 'translateY(-2px)' });
     }
 
+    if (parseInt($numPageVisuel.text().split('/')[0].trim()) === Math.ceil(pokemonList.length / maxPoke) - 1) { // Si fin de liste
+        $btnSuiv.css({ backgroundColor: '#7f7f7f', cursor: 'default', transform: 'none' });
+    } else {                                                                     // Dégriser si c'est ok
+        $btnSuiv.css({ backgroundColor: '#34495e', cursor: 'pointer', transform: 'translateY(-2px)' });
+    }
 }
 
-function fermeModal(id){
-    document.getElementById(id).style.display = "none";
-};
+function fermeModal(id) {
+    $('#' + id).hide();
+}
 
-// Quand click sur Précedent 
-btnPre.addEventListener('click', () => {
-    const numPageVisuel = document.getElementById('numPage');
-    let numPage = parseInt(numPageVisuel.textContent.split('/')[0].trim());
-    if(numPage > 0){    // évite la décrementation si page 0
+// Quand click sur Précédent
+$btnPre.on('click', function () {
+    let numPage = parseInt($numPageVisuel.text().split('/')[0].trim());
+    if (numPage > 0) {                                                          // évite la décrémentation si page 0
         numPage--;
-        numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(listeUtil.length / maxPoke)-1}`;
+        $numPageVisuel.text(` ${numPage} / ${Math.ceil(listeUtil.length / maxPoke) - 1}`);
         displayPokemons(listeUtil);
     }
 });
 
 // Quand click sur Suivant
-btnSuiv.addEventListener('click', () => {
-    const numPageVisuel = document.getElementById('numPage');
-    let numPage = parseInt(numPageVisuel.textContent.split('/')[0].trim());
-    if(numPage < Math.ceil(Object.values(listeUtil).length / maxPoke) - 1){ // évite l'incrémentation si page max
+$btnSuiv.on('click', function () {
+    let numPage = parseInt($numPageVisuel.text().split('/')[0].trim());
+    if (numPage < Math.ceil(Object.values(listeUtil).length / maxPoke) - 1) {  // évite l'incrémentation si page max
         numPage++;
-        numPageVisuel.textContent = ` ${numPage} / ${Math.ceil(listeUtil.length / maxPoke)-1}`;
+        $numPageVisuel.text(` ${numPage} / ${Math.ceil(listeUtil.length / maxPoke) - 1}`);
         displayPokemons(listeUtil);
     }
 });
 
-
-// Quand click sur Filtre on affiches les diff filtres dispo
-btnFiltre.addEventListener('click', () => {
-    if(filtreCont.style.display == "none"){
-        filtreCont.style.display = "flex";
-    } else if(filtreCont.style.display == "flex"){
-        filtreCont.style.display = "none";
+// Quand click sur Filtre on affiche les diff filtres dispo
+$btnFiltre.on('click', function () {
+    if ($filtreCont.is(':hidden')) {
+        $filtreCont.css('display', 'flex');
+    } else {
+        $filtreCont.hide();
     }
-}); 
+});
 
 // fonction pour initialiser les filtres dans le HTML
-function initFiltres(){
-    const selectType = document.createElement('select');        // le select des types
-    const selectAttack = document.createElement('select');      // le select des attaques
-    const inputPoke = document.createElement('input');          // l'input avec les nom de pokemons'
-
-    // definit tous les param
-    inputPoke.id = "inputPoke"                                  
-    inputPoke.type = "text"
-    inputPoke.placeholder = "Chercher un Pokémon"
-    selectType.id = 'typeSelect';
-    selectAttack.id ='attackSelect';
-
+function initFiltres() {
+    const $selectType   = $('<select>').attr('id', 'typeSelect');
+    const $selectAttack = $('<select>').attr('id', 'attackSelect');
+    const $inputPoke    = $('<input>').attr({
+        id: 'inputPoke',
+        type: 'text',
+        placeholder: 'Chercher un Pokémon'
+    });
 
     const types = Type.all_types;
-    const attacks = Object.values(Attack.all_attacks).sort((a, b) => a.name.localeCompare(b.name));;
+    const attacks = Object.values(Attack.all_attacks).sort((a, b) => a.name.localeCompare(b.name));
 
     // on initialise le premier comme le vide par défaut
-    selectType.innerHTML = `<option value="noType">---</option>`
-    // on initialise ensuite en bouclant le reste
-    for(var type in types){
-        selectType.innerHTML += `<option value="${type}">${type}</option>`
+    $selectType.html('<option value="noType">---</option>');
+    for (var type in types) {
+        $selectType.append(`<option value="${type}">${type}</option>`);
     }
 
     // on initialise le premier comme le vide par défaut
-    selectAttack.innerHTML = `<option value="noAttack">---</option>`
-    // on initialise ensuite en bouclant le reste
-    for(const att of attacks){
-        selectAttack.innerHTML += `<option value="${att.name}">${att.name}</option>`
+    $selectAttack.html('<option value="noAttack">---</option>');
+    for (const att of attacks) {
+        $selectAttack.append(`<option value="${att.name}">${att.name}</option>`);
     }
 
-    // on les fout dans le div conteneur 
-    filtreCont.appendChild(selectType);
-    filtreCont.appendChild(selectAttack);
-    filtreCont.appendChild(inputPoke);
+    // on les ajoute dans le div conteneur
+    $filtreCont.append($selectType, $selectAttack, $inputPoke);
 
-
-    // si un des elements est changé ou un nom est donné alors on appel la fonction qui s'occupe de filter le tout
-    document.getElementById('typeSelect').addEventListener('change', filtrage);
-    document.getElementById('attackSelect').addEventListener('change', filtrage);
-    document.getElementById('inputPoke').addEventListener('input', filtrage);
+    // si un des éléments est changé ou un nom est donné, on filtre
+    $('#typeSelect').on('change', filtrage);
+    $('#attackSelect').on('change', filtrage);
+    $('#inputPoke').on('input', filtrage);
 }
 
 function filtrage() {
     console.log("filtre ok");
     const allPokes = Object.values(Pokemon.all_pokemons);
 
-    // on recup les valeurs de ce qui est selectionné
-    const typeVal = document.getElementById('typeSelect').value;
-    const attackVal = document.getElementById('attackSelect').value;
-    const nameVal = document.getElementById('inputPoke').value.toLowerCase(); 
-    // Voir si la gestion des accent fonctionne 
+    // on récupère les valeurs de ce qui est sélectionné
+    const typeVal   = $('#typeSelect').val();
+    const attackVal = $('#attackSelect').val();
+    const nameVal   = $('#inputPoke').val().toLowerCase();
 
-
-    // on va vouloir parmis les pokemon seuls ceux qui correspondant a la selection
     const filtre = allPokes.filter(p => {
-        
-        // check si le nom comporte ce qu'on a écrit
         const nameF = p.pokemon_name.toLowerCase().includes(nameVal);
-        
-        // check si le pokemon a ce type  sinon true
         const typeF = (typeVal === "noType") || p.types.includes(typeVal);
-        
         console.table(p.rapides);
-
-        // check si le pokemon a cette attaque sinon true
-        const attF = (attackVal === "noAttack") || p.rapides.some(a => a.includes(attackVal));
-
+        const attF  = (attackVal === "noAttack") || p.rapides.some(a => a.includes(attackVal));
         return nameF && typeF && attF;
     });
 
     console.table(filtre.length);
 
-    // on met a jour le num de page
-    numPageVisuel.textContent = ` 0 / ${Math.max(0, Math.ceil(filtre.length / maxPoke) - 1)}`;
+    // on met à jour le num de page
+    $numPageVisuel.text(` 0 / ${Math.max(0, Math.ceil(filtre.length / maxPoke) - 1)}`);
     console.table(` 0 / ${Math.max(0, Math.ceil(filtre.length / maxPoke) - 1)}`);
 
-    // on met a jour la liste que l'on veut utiliser
-    listeUtil = filtre
+    listeUtil = filtre;
     displayPokemons(listeUtil);
 }
 
-function triPokemon(state, sujet){
+function triPokemon(state, sujet) {
     let listTemp = listeUtil;
-    if(sujet == "id"){
-        if(state % 2 == 0){
-            listTemp.sort((a, b) => {
-                return a.pokemon_id - (b.pokemon_id);
-            });
-        } else {
-            listTemp.sort((a, b) => {
-                return b.pokemon_id - (a.pokemon_id);
-            });
-        }
+
+    if (sujet == "id") {
+        listTemp.sort((a, b) => state % 2 == 0 ? a.pokemon_id - b.pokemon_id : b.pokemon_id - a.pokemon_id);
+    }
+    if (sujet == "nom") {
+        listTemp.sort((a, b) => state % 2 == 0
+            ? a.pokemon_name.localeCompare(b.pokemon_name)
+            : b.pokemon_name.localeCompare(a.pokemon_name));
+    }
+    if (sujet == "géneration") {
+        listTemp.sort((a, b) => state % 2 == 0 ? a.pokemon_id - b.pokemon_id : b.pokemon_id - a.pokemon_id);
+    }
+    if (sujet == "types") {
+        listTemp = state % 2 == 0
+            ? sortPokemonByTypeThenName(listTemp)
+            : sortPokemonByTypeThenName(listTemp).reverse();
+    }
+    if (sujet == "endurance") {
+        listTemp.sort((a, b) => state % 2 == 0 ? a.base_stamina - b.base_stamina : b.base_stamina - a.base_stamina);
+        if (state % 2 == 0) console.log("endu");
+    }
+    if (sujet == "points d'attaque") {
+        listTemp.sort((a, b) => state % 2 == 0 ? a.base_attack - b.base_attack : b.base_attack - a.base_attack);
+    }
+    if (sujet == "points de défense") {
+        listTemp.sort((a, b) => state % 2 == 0 ? a.base_defense - b.base_defense : b.base_defense - a.base_defense);
     }
 
-    if(sujet == "nom"){
-        if(state % 2 == 0){
-            listTemp.sort((a, b) => {
-                return a.pokemon_name.localeCompare(b.pokemon_name);
-            });
-        } else {
-            listTemp.sort((a, b) => {
-                return b.pokemon_name.localeCompare(a.pokemon_name);
-            });
-        }
-    }
-
-    if(sujet == "géneration"){
-        if(state % 2 == 0){
-            listTemp.sort((a, b) => {
-                return a.pokemon_id - (b.pokemon_id);
-            });
-        } else {
-            listTemp.sort((a, b) => {
-                return b.pokemon_id - (a.pokemon_id);
-            });
-        }
-    }
-
-    if(sujet == "types"){
-        if(state % 2 == 0){
-            listTemp = sortPokemonByTypeThenName(listTemp);
-        } else {
-            listTemp = sortPokemonByTypeThenName(listTemp).reverse();
-        }
-    }
-
-    if(sujet == "endurance"){
-        if(state % 2 == 0){
-            listTemp.sort((a, b) => {
-                return a.base_stamina - (b.base_stamina);
-            });
-            console.log("endu");
-        } else {
-            listTemp.sort((a, b) => {
-                return b.base_stamina - (a.base_stamina);
-            });
-        }
-    }
-
-    if(sujet == "points d'attaque"){
-        if(state % 2 == 0){
-            listTemp.sort((a, b) => {
-                return a.base_attack - (b.base_attack);
-            });
-        } else {
-            listTemp.sort((a, b) => {
-                return b.base_attack - (a.base_attack);
-            });
-        }
-    }
-
-    if(sujet == "points de défense"){
-        if(state % 2 == 0){
-            listTemp.sort((a, b) => {
-                return a.base_defense - (b.base_defense);
-            });
-        } else {
-            listTemp.sort((a, b) => {
-                return b.base_defense - (a.base_defense);
-            });
-        }
-    }
-
-    listeUtil = listTemp
+    listeUtil = listTemp;
     displayPokemons(listeUtil);
 }
 
-enteteTri.forEach(tri =>{
-    var state = 0
-    tri.addEventListener('click', () => {
-        enteteTri.forEach(tris =>{
-            tris.style.fontWeight = 500;
-        });
+$enteteTri.each(function () {
+    var state = 0;
+    $(this).on('click', function () {
+        $enteteTri.css('fontWeight', 500);                  // reset tous les entêtes
+        $(this).css('fontWeight', 'bold');                  // met en gras le entête cliqué
 
-        tri.style.fontWeight = "bold";
-        
-        var sujet = tri.innerHTML.toLowerCase().trim();
-        console.log(sujet)
+        var sujet = $(this).html().toLowerCase().trim();
+        console.log(sujet);
         triPokemon(state, sujet);
         state++;
-    })
+    });
 });
 
 // appel de la fonction
